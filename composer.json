@@ -1,0 +1,22 @@
+{
+    "name": "ahmedessam/laravel-git-toolkit",
+    "description": "A toolkit for managing git repositories in Laravel applications.",
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^10.0|^9.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ahmedessam\\LaravelGitToolkit\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ahmed Essam",
+            "email": "aahmedessam30@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
