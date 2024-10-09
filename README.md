@@ -9,7 +9,7 @@ Laravel Git Toolkit is a simple package that integrates Git operations within yo
 You can install the package via Composer:
 
 ```bash
-composer require aahmedessam30/laravel-git-toolkit
+composer require ahmedessam/laravel-git-toolkit
 ```
 
 ## Usage
