@@ -254,7 +254,11 @@ class GitCommands extends GitOperations
      */
     protected function logAction(): void
     {
+        $this->components->info('Showing the log 🚀...');
+
         $this->executeCommand('log');
+
+        $this->components->info('Log showed successfully 🚀...');
     }
 
     /**
@@ -262,7 +266,11 @@ class GitCommands extends GitOperations
      */
     protected function diffAction(): void
     {
+        $this->components->info('Showing the difference 🚀...');
+
         $this->executeCommand('diff');
+
+        $this->components->info('Difference showed successfully 🚀...');
     }
 
     /**
@@ -270,8 +278,12 @@ class GitCommands extends GitOperations
      */
     protected function pullAction(): void
     {
-        $branch = $this->options['branch'] ?? $this->getCurrentBranch();
+        $branch = $this->options['branch'] ?? $this->askForBranch();
+
+        $this->components->info('Pulling changes 🚀...');
 
         $this->executeCommand(sprintf('pull origin %s', $branch));
+
+        $this->components->info('Pulled successfully 🚀...');
     }
 }
