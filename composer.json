@@ -16,7 +16,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Ahmedessam\\LaravelGitToolkit\\LaravelGitToolkitServiceProvider"
+                "Ahmedessam\\LaravelGitToolkit\\Providers\\LaravelGitToolkitServiceProvider"
             ]
         }
     },
