@@ -1,6 +1,6 @@
 # Laravel Git Toolkit
 
-![Laravel Git Toolkit](https://img.shields.io/badge/Laravel-GitToolkit-brightgreen.svg)
+![Laravel Git Toolkit](https://banners.beyondco.de/Laravel%20Git%20Toolkit.png?theme=light&packageManager=composer+require&packageName=ahmedessam%2Flaravel-git-toolkit&pattern=architect&style=style_1&description=Integrate+Git+operations+within+your+Laravel+projects+to+manage+Git+workflows+more+efficiently&md=1&showWatermark=1&fontSize=100px&images=code)
 
 Laravel Git Toolkit is a simple package that integrates Git operations within your Laravel projects. It provides commands to help manage Git workflows more efficiently, such as initializing Git flow branches, committing changes, and other Git-related tasks.
 
