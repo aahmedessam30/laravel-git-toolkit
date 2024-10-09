@@ -2,7 +2,6 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Services;
 
-use Illuminate\Support\Facades\Process;
 
 class GitCommands extends GitOperations
 {
@@ -55,7 +54,7 @@ class GitCommands extends GitOperations
     {
         $this->components->info('Pushing local commits 🚀...');
 
-        $this->executeCommand(sprintf('push %s', $this->getCurrentBranch()));
+        $this->executeCommand(sprintf('push orgin %s', $this->getCurrentBranch()));
 
         $this->components->info('Local commits pushed successfully 🚀...');
     }

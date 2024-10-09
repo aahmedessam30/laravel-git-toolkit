@@ -11,6 +11,13 @@
             "Ahmedessam\\LaravelGitToolkit\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ahmedessam\\LaravelGitToolkit\\LaravelGitToolkitServiceProvider"
+            ]
+        }
+    },
     "authors": [
         {
             "name": "Ahmed Essam",
