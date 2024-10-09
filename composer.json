@@ -2,6 +2,7 @@
     "name": "ahmedessam/laravel-git-toolkit",
     "description": "A toolkit for managing git repositories in Laravel applications.",
     "type": "library",
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "illuminate/support": "^11.0|^10.0|^9.0|^8.0",
