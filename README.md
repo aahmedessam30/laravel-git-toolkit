@@ -15,7 +15,7 @@ composer require ahmedessam/laravel-git-toolkit
 You can publish the configuration file with:
 
 ```bash
-php artisan vendor:publish --tag=laravel-git-toolkit-config
+php artisan vendor:publish --tag=git-toolkit-config
 ```
 
 ## Usage

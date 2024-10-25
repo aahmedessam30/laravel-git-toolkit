@@ -33,6 +33,6 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/git-toolkit.php' => config_path('git-toolkit.php'),
-        ], 'config');
+        ], 'git-toolkit-config');
     }
 }
