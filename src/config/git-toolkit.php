@@ -9,6 +9,13 @@ return [
     'push_to_default_branch' => false,
 
     /**
+     * The default branch.
+     *
+     * This will be used when pushing changes to the default branch, default is 'current' to push to the current branch.
+     */
+    'default_branch' => 'current',
+
+    /**
      * The default branch to push to.
      *
      * If set to true, the default message will be used when pushing changes.

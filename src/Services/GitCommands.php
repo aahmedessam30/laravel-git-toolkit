@@ -64,7 +64,7 @@ class GitCommands extends GitOperations
         }
 
         $branch = $this->getConfig('push_to_default_branch')
-            ? $this->getCurrentBranch()
+            ? ($this->getConfig('default_branch') ?? $this->getCurrentBranch())
             : ($this->options['branch'] ?? $this->askForBranch());
 
         if ($branch !== $this->getCurrentBranch()) {
