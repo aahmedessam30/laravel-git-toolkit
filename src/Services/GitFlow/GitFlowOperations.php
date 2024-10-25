@@ -67,7 +67,7 @@ class GitFlowOperations extends GitOperations
     {
         $branches = [];
 
-        foreach (['feature', 'fix', 'release'] as $type) {
+        foreach ($this->getFlowConfig('optional_branches') as $type) {
             if ($this->components->confirm("Do you want to create a $type branch?")) {
                 $name = $this->command->ask(sprintf("Enter [%s] branch name", ucfirst($type)));
                 $this->createBranch("$type/$name");

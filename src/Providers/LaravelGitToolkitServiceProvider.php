@@ -17,13 +17,22 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
         $this->app->bind('gitflow-toolkit', function () {
             return new GitFlowToolkit();
         });
+
+        $this->mergeConfigFrom(__DIR__ . '/../config/git-toolkit.php', 'git-toolkit-config');
     }
 
     public function boot(): void
     {
-        $this->commands([
-            GitCommand::class,
-            GitFlowCommand::class,
-        ]);
+        $commands = [GitCommand::class];
+
+        if (config('git-toolkit-config.gitflow.enabled')) {
+            $commands[] = GitFlowCommand::class;
+        }
+
+        $this->commands($commands);
+
+        $this->publishes([
+            __DIR__ . '/../config/git-toolkit.php' => config_path('git-toolkit.php'),
+        ], 'config');
     }
 }

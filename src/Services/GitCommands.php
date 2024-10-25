@@ -12,37 +12,27 @@ class GitCommands extends GitOperations
 
     private function getCommitChoices(): array
     {
-        return [
-            'feat'     => '🚀 Feature: A new feature',
-            'fix'      => '🐛 Fix: A bug fix',
-            'docs'     => '📝 Docs: Documentation only changes',
-            'style'    => '💄 Style: Changes that do not affect the meaning of the code',
-            'refactor' => '♻️ Refactor: A code change that neither fixes a bug nor adds a feature',
-            'test'     => '🚨 Test: Adding missing tests or correcting existing tests',
-            'chore'    => '🔧 Chore: Changes to the build process or auxiliary tools and libraries such as documentation generation',
-        ];
+        return $this->getConfig('commit_types');
     }
 
     private function getCommitEmoji(string $commit_type): string
     {
-        $emojis = [
-            'feat'     => '🚀',
-            'fix'      => '🐛',
-            'docs'     => '📝',
-            'style'    => '💄',
-            'refactor' => '♻️',
-            'test'     => '🚨',
-            'chore'    => '🔧',
-        ];
+        $emojis = $this->getConfig('commit_emojis');
 
         return $emojis[$commit_type];
     }
 
     private function getCommitMessage(): string
     {
-        $default_message = sprintf("Update [%s] branch with latest changes.", $this->getCurrentBranch());
+        if ($this->getConfig('push_with_default_message')) {
+            $default_message = sprintf($this->getConfig('default_commit_message'), $this->getCurrentBranch());
+            $type            = $this->getConfig('default_commit_type');
+            return sprintf('%s %s: %s', $this->getCommitEmoji($type), $type, $default_message);
+        }
+
+        $default_message = sprintf($this->getConfig('default_commit_message'), $this->getCurrentBranch());
         $commit          = $this->components->ask(sprintf('Enter the commit message, Leave empty to use the default message [%s]', $default_message)) ?: $default_message;
-        $commit_type     = $this->command->choice('Enter the commit type', $this->getCommitChoices(), 'feat');
+        $commit_type     =  $this->command->choice('Enter the commit type', $this->getCommitChoices(), 'feat');
 
         return sprintf('%s %s: %s', $this->getCommitEmoji($commit_type), $commit_type, $commit);
     }
@@ -73,7 +63,9 @@ class GitCommands extends GitOperations
             return;
         }
 
-        $branch = $this->options['branch'] ?? $this->askForBranch();
+        $branch = $this->getConfig('push_to_default_branch')
+            ? $this->getCurrentBranch()
+            : ($this->options['branch'] ?? $this->askForBranch());
 
         if ($branch !== $this->getCurrentBranch()) {
             $commands = [
@@ -119,10 +111,6 @@ class GitCommands extends GitOperations
             $this->components->error('You can not merge the same branch 🤷‍♂️...');
         }
 
-        if (!$this->branchExists($branch)) {
-            throw new \Exception(sprintf('Branch [%s] does not exist 🤷‍♂️...', $branch));
-        }
-
         $commands = [
             sprintf('checkout %s', $branch),
             sprintf('pull origin %s', $branch),
@@ -132,6 +120,10 @@ class GitCommands extends GitOperations
         ];
 
         $this->components->info('Merging changes 🚀...');
+
+        if (!$this->branchExists($branch)) {
+            throw new \Exception(sprintf('Branch [%s] does not exist 🤷‍♂️...', $branch));
+        }
 
         foreach ($commands as $command) {
             $this->executeCommand($command);
@@ -178,16 +170,7 @@ class GitCommands extends GitOperations
             $this->branchAction();
         }
 
-        $branchType = $this->command->choice('Select the branch type', ['feature', 'fix', 'hotfix'], 'feature');
-        $isFor      = $this->command->choice('Select the branch is for', ['api', 'dashboard', 'other'], 'other');
-        $branch     = str($branch)->slug()->replace($branchType, '')->afterLast('/')->value();
-
-        if ($isFor === 'other') {
-            $branch = str($branch)->replace($isFor, '')->value();
-            $branch = sprintf('%s/%s', $branchType, $branch);
-        } else {
-            $branch = sprintf('%s/%s/%s', $branchType, $isFor, $branch);
-        }
+        $branch = $this->getBranchName($branch);
 
         $commands = [
             sprintf('checkout -b %s', $branch),
@@ -195,6 +178,10 @@ class GitCommands extends GitOperations
         ];
 
         $this->components->info('Creating branch 🚀...');
+
+        if ($this->branchExists($branch)) {
+            throw new \Exception(sprintf('Branch [%s] already exists 🤷‍♂️...', $branch));
+        }
 
         foreach ($commands as $command) {
             $this->executeCommand($command);

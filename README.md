@@ -12,6 +12,12 @@ You can install the package via Composer:
 composer require ahmedessam/laravel-git-toolkit
 ```
 
+You can publish the configuration file with:
+
+```bash
+php artisan vendor:publish --tag=laravel-git-toolkit-config
+```
+
 ## Usage
 
 To initialize git flow branches, run the following command:
