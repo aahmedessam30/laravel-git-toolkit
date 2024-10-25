@@ -63,6 +63,9 @@ class GitFlowOperations extends GitOperations
         );
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function createOptionalBranches(): array
     {
         $branches = [];
@@ -70,6 +73,7 @@ class GitFlowOperations extends GitOperations
         foreach ($this->getFlowConfig('optional_branches') as $type) {
             if ($this->components->confirm("Do you want to create a $type branch?")) {
                 $name = $this->command->ask(sprintf("Enter [%s] branch name", ucfirst($type)));
+                $type = array_key_exists($type, $this->getFlowConfig('branch_prefixes')) ? $this->getFlowConfig('branch_prefixes')[$type] : $type;
                 $this->createBranch("$type/$name");
                 $branches[] = "$type/$name";
             }

@@ -272,4 +272,16 @@ class GitCommands extends GitOperations
 
         $this->components->info('Pulled successfully 🚀...');
     }
+
+    /**
+     * @throws \Exception
+     */
+    protected function fetchAction(): void
+    {
+        $this->components->info('Fetching changes 🚀...');
+
+        $this->executeCommand('fetch');
+
+        $this->components->info('Fetched successfully 🚀...');
+    }
 }
