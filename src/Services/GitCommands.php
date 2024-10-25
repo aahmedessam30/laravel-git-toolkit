@@ -73,15 +73,21 @@ class GitCommands extends GitOperations
                 sprintf('pull origin %s', $branch),
                 'add .',
                 sprintf('commit -m "%s"', $this->getCommitMessage()),
-                sprintf('push origin %s', $branch),
-                sprintf('checkout %s', $this->getCurrentBranch()),
             ];
+
+            if ($this->getConfig('push_after_commit')) {
+                $commands[] = sprintf('push origin %s', $this->getCurrentBranch());
+                $commands[] = sprintf('checkout %s', $branch);
+            }
         } else {
             $commands = [
                 'add .',
                 sprintf('commit -m "%s"', $this->getCommitMessage()),
-                sprintf('push origin %s', $branch),
             ];
+
+            if ($this->getConfig('push_after_commit')) {
+                $commands[] = sprintf('checkout %s', $branch);
+            }
         }
 
         $this->components->info('Pushing changes 🚀...');

@@ -30,6 +30,13 @@ return [
     'default_commit_message' => 'Update [%s] branch with latest changes.',
 
     /**
+     * Push after commit.
+     *
+     * If set to true, the changes will be pushed after committing.
+     */
+    'push_after_commit' => true,
+
+    /**
      * The commit types.
      *
      * This will be used when pushing changes, you can add more types if you want.
