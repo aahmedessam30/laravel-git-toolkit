@@ -25,6 +25,10 @@ class GitFlowToolkit extends GitFlowOperations
             throw new \Exception("This is not a git repository 🤷‍♂️, please initialize Git first.");
         }
 
+        if (!$this->getFlowConfig('enabled')) {
+            throw new \Exception("Git Flow is not enabled in the configuration file.");
+        }
+
         return $this;
     }
 

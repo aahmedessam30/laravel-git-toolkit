@@ -23,13 +23,10 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $commands = [GitCommand::class];
-
-        if (config('git-toolkit-config.gitflow.enabled')) {
-            $commands[] = GitFlowCommand::class;
-        }
-
-        $this->commands($commands);
+        $this->commands([
+            GitCommand::class,
+            GitFlowCommand::class,
+        ]);
 
         $this->publishes([
             __DIR__ . '/../config/git-toolkit.php' => config_path('git-toolkit.php'),
