@@ -53,6 +53,13 @@ return [
     'return_to_previous_branch' => true,
 
     /**
+     * Delete the branch after merging.
+     *
+     * If set to true, the branch will be deleted after merging.
+     */
+    'delete_after_merge' => false,
+
+    /**
      * The commit types.
      *
      * This will be used when pushing changes, you can add more types if you want.

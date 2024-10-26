@@ -120,8 +120,16 @@ class GitCommands extends GitOperations
             sprintf('pull origin %s', $branch),
             sprintf('merge %s', $merge),
             sprintf('push origin %s', $branch),
-            sprintf('checkout %s', $merge),
         ];
+
+        if ($this->getConfig('delete_after_merge')) {
+            $commands[] = sprintf('branch -d %s', $merge);
+            $commands[] = sprintf('push origin --delete %s', $merge);
+        }
+
+        if ($this->getConfig('return_to_previous_branch') && !$this->getConfig('delete_after_merge')) {
+            $commands[] = sprintf('checkout %s', $this->options['return'] ?? $merge);
+        }
 
         $this->components->info('Merging changes 🚀...');
 
