@@ -7,7 +7,11 @@ use Ahmedessam\LaravelGitToolkit\Facade\GitToolkit;
 
 class GitCommand extends Command
 {
-    protected $signature = 'git {action} {--branch= : The branch name} {--message= : The commit message} {--merge= : The branch name to merge}';
+    protected $signature = 'git {action} 
+    {--branch= : The branch name} 
+    {--message= : The commit message} 
+    {--merge= : The branch name to merge} 
+    {--return= : The branch name to return to}';
 
     protected $description = 'Execute git commands from the console';
 

@@ -44,6 +44,15 @@ return [
     'push_after_commit' => true,
 
     /**
+     * Return to the previous branch after pushing.
+     *
+     * If set to true, the tool will return to the previous branch after pushing changes.
+     * If you specify a branch to return to, it will return to it,
+     * otherwise, it will return to the current branch before pushing (previous branch).
+     */
+    'return_to_previous_branch' => true,
+
+    /**
      * The commit types.
      *
      * This will be used when pushing changes, you can add more types if you want.

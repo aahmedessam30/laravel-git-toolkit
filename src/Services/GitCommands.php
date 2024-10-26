@@ -72,28 +72,20 @@ class GitCommands extends GitOperations
             $branch = $this->options['branch'] ?? $this->askForBranch();
         }
 
+        $commands = [
+            sprintf('checkout %s', $branch),
+            sprintf('pull origin %s', $branch),
+            'add .',
+            sprintf('commit -m "%s"', $this->getCommitMessage()),
+        ];
 
-        if ($branch !== $this->getCurrentBranch()) {
-            $commands = [
-                sprintf('checkout %s', $branch),
-                sprintf('pull origin %s', $branch),
-                'add .',
-                sprintf('commit -m "%s"', $this->getCommitMessage()),
-            ];
+        if ($this->getConfig('push_after_commit')) {
+            $commands[] = sprintf('push origin %s', $branch);
+        }
 
-            if ($this->getConfig('push_after_commit')) {
-                $commands[] = sprintf('push origin %s', $this->getCurrentBranch());
-                $commands[] = sprintf('checkout %s', $branch);
-            }
-        } else {
-            $commands = [
-                'add .',
-                sprintf('commit -m "%s"', $this->getCommitMessage()),
-            ];
-
-            if ($this->getConfig('push_after_commit')) {
-                $commands[] = sprintf('checkout %s', $branch);
-            }
+        if ($this->getConfig('return_to_previous_branch')) {
+            $previousBranch = $this->options['return'] ?? $this->getCurrentBranch();
+            $commands[]     = sprintf('checkout %s', $previousBranch);
         }
 
         $this->components->info('Pushing changes 🚀...');
