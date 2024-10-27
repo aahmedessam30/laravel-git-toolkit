@@ -6,42 +6,42 @@ return [
      *
      * If set to true, the current branch will be pushed to the default branch.
      */
-    'push_to_default_branch' => false,
+    'push_to_default_branch' => env('GIT_PUSH_TO_DEFAULT_BRANCH', false),
 
     /**
      * The default branch.
      *
      * This will be used when pushing changes to the default branch, default is 'current' to push to the current branch.
      */
-    'default_branch' => 'current',
+    'default_branch' => env('GIT_DEFAULT_BRANCH', 'current'),
 
     /**
      * The default branch to push to.
      *
      * If set to true, the default message will be used when pushing changes.
      */
-    'push_with_default_message' => false,
+    'push_with_default_message' => env('GIT_PUSH_WITH_DEFAULT_MESSAGE', false),
 
     /**
      * The default commit type.
      *
      * This will be used when pushing changes.
      */
-    'default_commit_type' => 'feat',
+    'default_commit_type' => env('GIT_DEFAULT_COMMIT_TYPE', 'feat'),
 
     /**
      * The default commit message.
      *
      * This will be used when pushing changes, [%s] will be replaced with the current branch name.
      */
-    'default_commit_message' => 'Update [%s] branch with latest changes.',
+    'default_commit_message' => env('GIT_DEFAULT_COMMIT_MESSAGE', 'Update [%s] branch with latest changes.'),
 
     /**
      * Push after commit.
      *
      * If set to true, the changes will be pushed after committing.
      */
-    'push_after_commit' => true,
+    'push_after_commit' => env('GIT_PUSH_AFTER_COMMIT', true),
 
     /**
      * Return to the previous branch after pushing.
@@ -50,14 +50,14 @@ return [
      * If you specify a branch to return to, it will return to it,
      * otherwise, it will return to the current branch before pushing (previous branch).
      */
-    'return_to_previous_branch' => true,
+    'return_to_previous_branch' => env('GIT_RETURN_TO_PREVIOUS_BRANCH', true),
 
     /**
      * Delete the branch after merging.
      *
      * If set to true, the branch will be deleted after merging.
      */
-    'delete_after_merge' => false,
+    'delete_after_merge' => env('GIT_DELETE_AFTER_MERGE', false),
 
     /**
      * The commit types.
@@ -138,7 +138,7 @@ return [
          *
          * If set to true, the Git Flow will be enabled.
          */
-        'enabled' => true,
+        'enabled' => env('GIT_FLOW_ENABLED', false),
 
         /**
          * The Git Flow branches.

@@ -18,6 +18,36 @@ You can publish the configuration file with:
 php artisan vendor:publish --tag=git-toolkit-config
 ```
 
+## Environment Variables
+
+The package uses the following environment variables:
+
+- `GIT_PUSH_TO_DEFAULT_BRANCH` - Whether to push changes to the default branch. Default is `false`.
+- `GIT_DEFAULT_BRANCH` - The default branch to push changes to. Default is `current`.
+- `GIT_PUSH_WITH_DEFAULT_MESSAGE` - Whether to push changes with the default commit message. Default is `false`.
+- `GIT_DEFAULT_COMMIT_TYPE` - The default commit type. Default is `feat`.
+- `GIT_DEFAULT_COMMIT_MESSAGE` - The default commit message. Default is `Update [%s] branch with latest changes.`.
+- `GIT_PUSH_AFTER_COMMIT` - Whether to push changes after committing. Default is `true`.
+- `GIT_RETURN_TO_PREVIOUS_BRANCH` - Whether to return to the previous branch after creating a new branch. Default is `true`.
+- `GIT_DELETE_AFTER_MERGE` - Whether to delete the merged branch after merging. Default is `false`.
+- `GIT_FLOW_ENABLED` - Whether to enable Git flow branches. Default is `true`.
+
+You can add these environment variables to your `.env` file.
+
+copy the following code to your `.env` file:
+
+```bash
+GIT_PUSH_TO_DEFAULT_BRANCH=
+GIT_DEFAULT_BRANCH=
+GIT_PUSH_WITH_DEFAULT_MESSAGE=
+GIT_DEFAULT_COMMIT_TYPE=
+GIT_DEFAULT_COMMIT_MESSAGE=
+GIT_PUSH_AFTER_COMMIT=
+GIT_RETURN_TO_PREVIOUS_BRANCH=
+GIT_DELETE_AFTER_MERGE=
+GIT_FLOW_ENABLED=
+```
+
 ## Usage
 
 To initialize git flow branches, run the following command:
