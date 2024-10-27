@@ -16,7 +16,8 @@ class GitToolkit extends GitCommands
         'delete-branch',
         'log',
         'diff',
-        'fetch'
+        'fetch',
+        'reset',
     ];
 
     /**

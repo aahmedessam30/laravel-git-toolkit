@@ -25,7 +25,8 @@ class GitCommands extends GitOperations
     private function getCommitMessage(): string
     {
         if ($this->getConfig('push_with_default_message')) {
-            $default_message = sprintf($this->getConfig('default_commit_message'), $this->getCurrentBranch());
+            $default_commit  = $this->getConfig('default_commit_message');
+            $default_message = str_contains($default_commit, '%s') ? sprintf($default_commit, $this->getCurrentBranch()) : $default_commit;
             $type            = $this->getConfig('default_commit_type');
             return sprintf('%s %s: %s', $this->getCommitEmoji($type), $type, $default_message);
         }
@@ -295,5 +296,30 @@ class GitCommands extends GitOperations
         $this->executeCommand('fetch');
 
         $this->components->info('Fetched successfully 🚀...');
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function resetAction(): void
+    {
+        $commit = $this->options['commit'] ?? $this->components->ask('Enter the commit hash to reset to?');
+
+        if (!$commit) {
+            $this->components->error('You must enter the commit hash 🤷‍♂️...');
+            $this->resetAction();
+        }
+
+        $commands = [
+            sprintf('reset --hard %s', $commit),
+        ];
+
+        $this->components->info('Resetting changes 🚀...');
+
+        foreach ($commands as $command) {
+            $this->executeCommand($command);
+        }
+
+        $this->components->info('Reset successfully 🚀...');
     }
 }
