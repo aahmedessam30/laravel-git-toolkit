@@ -60,6 +60,13 @@ return [
     'delete_after_merge' => env('GIT_DELETE_AFTER_MERGE', false),
 
     /**
+     * The default branches.
+     *
+     * This will be used when pushing changes, you can add more branches if you want.
+     */
+    'default_branches' => ['main', 'master', 'develop', 'staging', 'hotfix'],
+
+    /**
      * The commit types.
      *
      * This will be used when pushing changes, you can add more types if you want.

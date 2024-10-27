@@ -18,6 +18,7 @@ class GitToolkit extends GitCommands
         'diff',
         'fetch',
         'reset',
+        'rebase'
     ];
 
     /**

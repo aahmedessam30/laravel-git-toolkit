@@ -28,7 +28,7 @@ The package uses the following environment variables:
 - `GIT_DEFAULT_COMMIT_TYPE` - The default commit type. Default is `feat`.
 - `GIT_DEFAULT_COMMIT_MESSAGE` - The default commit message. Default is `Update [%s] branch with latest changes.`.
 - `GIT_PUSH_AFTER_COMMIT` - Whether to push changes after committing. Default is `true`.
-- `GIT_RETURN_TO_PREVIOUS_BRANCH` - Whether to return to the previous branch after creating a new branch. Default is `true`.
+- `GIT_RETURN_TO_PREVIOUS_BRANCH` - Whether to return to the previous branch after committing. Default is `true`.
 - `GIT_DELETE_AFTER_MERGE` - Whether to delete the merged branch after merging. Default is `false`.
 - `GIT_FLOW_ENABLED` - Whether to enable Git flow branches. Default is `true`.
 
@@ -47,6 +47,19 @@ GIT_RETURN_TO_PREVIOUS_BRANCH=true
 GIT_DELETE_AFTER_MERGE=false
 GIT_FLOW_ENABLED=true
 ```
+
+## Notes
+
+- The package uses the `git` command to perform Git operations.
+- The package asks few questions to get the required data to perform the operation.
+- The package provides a list of flags to specify the required data to perform the operation.
+- The package uses the following flags:
+    - `--branch` flag to specify the branch name.
+    - `--message` flag to specify the commit message.
+    - `--type` flag to specify the commit type.
+    - `--merge` flag to specify the branch to merge.
+    - `--return` flag to specify whether to return to the previous branch.
+    - `--commit` flag to specify the commit hash to reset to.
 
 ## Usage
 
@@ -95,6 +108,46 @@ To merge branches, run the following command:
 php artisan git merge
 ```
 
+This command will merge the specified branch into the current branch.
+
+To delete a branch, run the following command:
+
+```bash
+php artisan git delete-branch
+```
+
+This command will delete the specified branch.
+
+To Push new branch to remote repository, run the following command:
+
+```bash
+php artisan git push-branch
+```
+
+To Fetch changes from the remote repository, run the following command:
+
+```bash
+php artisan git fetch
+```
+
+This command will fetch changes from the remote repository.
+
+To Rebase changes from the remote repository, run the following command:
+
+```bash
+php artisan git rebase
+```
+
+This command will rebase changes from the remote repository.
+
+To Reset changes from the remote repository, run the following command:
+
+```bash
+php artisan git reset --commit=<commit-hash>
+```
+
+This command will reset changes from the remote repository.
+
 ## Features
 
 - Initialize Git flow branches
@@ -102,6 +155,11 @@ php artisan git merge
 - Create branches for features, fixes, releases, hotfixes or other custom branches
 - Pull changes from the remote repository
 - Merge branches
+- Delete branches
+- Push new branch to remote repository
+- Fetch changes from the remote repository
+- Rebase changes from the remote repository
+- Reset changes from the remote repository
 
 ## Requirements
 

@@ -5,9 +5,12 @@ namespace Ahmedessam\LaravelGitToolkit\Services;
 
 class GitCommands extends GitOperations
 {
-    protected function askForBranch(): string
+    protected function askForBranch($message = null): string
     {
-        return $this->components->ask(sprintf('Enter the branch name, Leave empty to use the current branch [%s]', $this->getCurrentBranch())) ?: $this->getCurrentBranch();
+        $message       = $message ?: 'Enter the branch name?';
+        $currentBranch = $this->getCurrentBranch();
+
+        return $this->components->ask(sprintf("$message, Leave empty to use the current branch [%s]", $currentBranch)) ?: $currentBranch;
     }
 
     private function getCommitChoices(): array
@@ -27,7 +30,7 @@ class GitCommands extends GitOperations
         if ($this->getConfig('push_with_default_message')) {
             $default_commit  = $this->getConfig('default_commit_message');
             $default_message = str_contains($default_commit, '%s') ? sprintf($default_commit, $this->getCurrentBranch()) : $default_commit;
-            $type            = $this->getConfig('default_commit_type');
+            $type            = $this->options['type'] ?? $this->getConfig('default_commit_type');
             return sprintf('%s %s: %s', $this->getCommitEmoji($type), $type, $default_message);
         }
 
@@ -110,7 +113,7 @@ class GitCommands extends GitOperations
             $this->mergeAction();
         }
 
-        $merge = $this->options['merge'] ?? $this->askForBranch();
+        $merge = $this->options['merge'] ?? $this->askForBranch('Enter the branch name to merge (source branch)');
 
         if ($branch === $merge) {
             $this->components->error('You can not merge the same branch 🤷‍♂️...');
@@ -124,8 +127,14 @@ class GitCommands extends GitOperations
         ];
 
         if ($this->getConfig('delete_after_merge')) {
-            $commands[] = sprintf('branch -d %s', $merge);
-            $commands[] = sprintf('push origin --delete %s', $merge);
+            if (in_array($merge, $this->getConfig('default_branches'))) {
+                throw new \Exception(sprintf('You can not delete the default branch [%s] 🤷‍♂️...', $merge));
+            }
+
+            if ($this->components->confirm(sprintf('Are you sure you want to delete the branch [%s] after merging?', $merge))) {
+                $commands[] = sprintf('branch -d %s', $merge);
+                $commands[] = sprintf('push origin --delete %s', $merge);
+            }
         }
 
         if ($this->getConfig('return_to_previous_branch') && !$this->getConfig('delete_after_merge')) {
@@ -321,5 +330,30 @@ class GitCommands extends GitOperations
         }
 
         $this->components->info('Reset successfully 🚀...');
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function rebaseAction(): void
+    {
+        $branch = $this->options['branch'] ?? $this->components->ask('Enter the branch name to rebase?');
+
+        if (!$branch) {
+            $this->components->error('You must enter the branch name 🤷‍♂️...');
+            $this->rebaseAction();
+        }
+
+        $commands = [
+            sprintf('rebase %s', $branch),
+        ];
+
+        $this->components->info('Rebasing changes 🚀...');
+
+        foreach ($commands as $command) {
+            $this->executeCommand($command);
+        }
+
+        $this->components->info('Rebased successfully 🚀...');
     }
 }
