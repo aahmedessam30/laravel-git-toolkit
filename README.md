@@ -36,7 +36,7 @@ You can add these environment variables to your `.env` file.
 
 copy the following code to your `.env` file:
 
-```bash
+```env
 GIT_PUSH_TO_DEFAULT_BRANCH=
 GIT_DEFAULT_BRANCH=
 GIT_PUSH_WITH_DEFAULT_MESSAGE=
