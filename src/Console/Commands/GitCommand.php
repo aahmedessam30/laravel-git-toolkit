@@ -11,7 +11,8 @@ class GitCommand extends Command
     {--branch= : The branch name} 
     {--message= : The commit message} 
     {--merge= : The branch name to merge} 
-    {--return= : The branch name to return to}';
+    {--return= : The branch name to return to}
+    {--commit= : The commit to reset to}';
 
     protected $description = 'Execute git commands from the console';
 
