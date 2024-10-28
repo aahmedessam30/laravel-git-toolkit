@@ -106,19 +106,57 @@ class GitCommands extends GitOperations
      */
     protected function mergeAction(): void
     {
-        $branch = $this->options['branch'] ?? $this->components->ask('Enter the branch name to merge into (target branch)');
+        $branchInput = $this->options['branch'] ?? $this->components->ask('Enter the target branch to merge into, separated by comma [,] or space if multiple:');
+        $branches    = array_filter(preg_split('/[\s,]+/', trim($branchInput)));
 
-        if (!$branch) {
-            $this->components->error('You must enter the target branch 🤷‍♂️...');
-            $this->mergeAction();
+        if (empty($branches)) {
+            throw new \Exception('You must enter at least one branch to merge 🤷‍♂️...');
         }
 
-        $merge = $this->options['merge'] ?? $this->askForBranch('Enter the branch name to merge (source branch)');
+        $merge = $this->options['merge'] ?? $this->askForBranch('Enter the branch name to merge from:');
 
-        if ($branch === $merge) {
-            $this->components->error('You can not merge the same branch 🤷‍♂️...');
+        if (in_array($merge, $branches)) {
+            throw new \Exception('You cannot merge the same branch 🤷‍♂️...');
         }
 
+        $this->components->info('Merging changes 🚀...');
+
+        foreach ($branches as $branch) {
+            $this->mergeBranch($branch, $merge);
+        }
+
+        $this->command->newLine();
+
+        $this->components->info('Merged successfully 🚀...');
+    }
+
+    /**
+     * Merge the source branch into the target branch and execute the commands.
+     * @throws \Exception
+     */
+    private function mergeBranch(string $branch, string $merge): void
+    {
+        if (!$this->branchExists($branch)) {
+            throw new \Exception(sprintf('Branch [%s] does not exist 🤷‍♂️...', $branch));
+        }
+
+        $commands = $this->buildMergeCommands($branch, $merge);
+
+        $this->command->newLine();
+        $this->components->info(sprintf('Merging changes into branch [%s] 🚀...', $branch));
+
+        foreach ($commands as $command) {
+            $this->executeCommand($command);
+        }
+
+        $this->components->info(sprintf('Merged successfully into branch [%s] 🚀...', $branch));
+    }
+
+    /**
+     * Build git commands for merging branches
+     */
+    private function buildMergeCommands(string $branch, string $merge): array
+    {
         $commands = [
             sprintf('checkout %s', $branch),
             sprintf('pull origin %s', $branch),
@@ -126,11 +164,7 @@ class GitCommands extends GitOperations
             sprintf('push origin %s', $branch),
         ];
 
-        if ($this->getConfig('delete_after_merge')) {
-            if (in_array($merge, $this->getConfig('default_branches'))) {
-                throw new \Exception(sprintf('You can not delete the default branch [%s] 🤷‍♂️...', $merge));
-            }
-
+        if ($this->getConfig('delete_after_merge') && !$this->isDefaultBranch($merge)) {
             if ($this->components->confirm(sprintf('Are you sure you want to delete the branch [%s] after merging?', $merge))) {
                 $commands[] = sprintf('branch -d %s', $merge);
                 $commands[] = sprintf('push origin --delete %s', $merge);
@@ -138,21 +172,13 @@ class GitCommands extends GitOperations
         }
 
         if ($this->getConfig('return_to_previous_branch') && !$this->getConfig('delete_after_merge')) {
-            $commands[] = sprintf('checkout %s', $this->options['return'] ?? $merge);
+            $previousBranch = $this->options['return'] ?? $merge;
+            $commands[] = sprintf('checkout %s', $previousBranch);
         }
 
-        $this->components->info('Merging changes 🚀...');
-
-        if (!$this->branchExists($branch)) {
-            throw new \Exception(sprintf('Branch [%s] does not exist 🤷‍♂️...', $branch));
-        }
-
-        foreach ($commands as $command) {
-            $this->executeCommand($command);
-        }
-
-        $this->components->info('Merged successfully 🚀...');
+        return $commands;
     }
+
 
     /**
      * @throws \Exception

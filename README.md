@@ -105,10 +105,15 @@ This command will pull changes from the remote repository to the current branch 
 To merge branches, run the following command:
 
 ```bash
-php artisan git merge
+php artisan git merge --merge=<source-branch> --branch=<target-branch>
 ```
 
-This command will merge the specified branch into the current branch.
+### Flags 
+- `--merge` flag to specify the branch to merge from.
+- `--branch` flag to specify the branch or branches sperated by comma or space to merge into.
+- **ex:** `php artisan git merge --merge=feature --branch=develop,main`
+
+This command will merge the specified branch into the branch you specify.
 
 To delete a branch, run the following command:
 

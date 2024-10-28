@@ -101,4 +101,9 @@ class GitOperations
 
         return $name;
     }
+
+    protected function isDefaultBranch(string $branch): bool
+    {
+        return in_array($branch, $this->getConfig('default_branches'));
+    }
 }
