@@ -113,7 +113,7 @@ class GitCommands extends GitOperations
             throw new \Exception('You must enter at least one branch to merge 🤷‍♂️...');
         }
 
-        $merge = $this->options['merge'] ?? $this->askForBranch('Enter the branch name to merge from:');
+        $merge = $this->options['merge'] ?? $this->askForBranch('Enter the branch name to merge from');
 
         if (in_array($merge, $branches)) {
             throw new \Exception('You cannot merge the same branch 🤷‍♂️...');
@@ -220,12 +220,23 @@ class GitCommands extends GitOperations
 
         $branch = $this->getBranchName($branch);
 
+        if ($this->components->confirm(sprintf('Are you sure you want to create the branch [%s]?', $branch), true)) {
+            $this->createBranch($branch);
+        }
+    }
+
+    /**
+     * Create a new branch
+     * @throws \Exception
+     */
+    private function createBranch(string $branch): void
+    {
         $commands = [
             sprintf('checkout -b %s', $branch),
             sprintf('push --set-upstream origin %s', $branch),
         ];
 
-        $this->components->info('Creating branch 🚀...');
+        $this->components->info(sprintf('Creating branch [%s] 🚀...', $branch));
 
         if ($this->branchExists($branch)) {
             throw new \Exception(sprintf('Branch [%s] already exists 🤷‍♂️...', $branch));
@@ -243,7 +254,7 @@ class GitCommands extends GitOperations
      */
     protected function pushBranchAction(): void
     {
-        $branch = $this->options['branch'] ?? $this->components->ask('Enter the branch name to push?');
+        $branch = $this->options['branch'] ?? $this->askForBranch("Enter the branch name to push to the remote");
 
         if (!$branch) {
             $this->components->error('You must enter the branch name 🤷‍♂️...');
@@ -252,7 +263,7 @@ class GitCommands extends GitOperations
 
         $this->components->info('Pushing branch 🚀...');
 
-        $this->executeCommand(sprintf('push origin %s', $branch));
+        $this->executeCommand(sprintf('push --set-upstream origin %s', $branch));
 
         $this->components->info('Branch pushed successfully 🚀...');
     }

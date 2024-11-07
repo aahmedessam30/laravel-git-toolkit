@@ -114,7 +114,8 @@ return [
     'branch_types' => [
         'feature' => 'Features',
         'fix'     => 'Bug Fixes',
-        'hotfix'  => 'Hotfixes',
+        'release' => 'Release',
+        'support' => 'Support',
     ],
 
     /**

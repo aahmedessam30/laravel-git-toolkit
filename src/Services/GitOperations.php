@@ -78,19 +78,26 @@ class GitOperations
         $uses     = $this->getConfig('branch_uses');
         $prefixes = $this->getConfig('branch_prefixes');
 
-        $type = str($name)->contains($types)
-            ? collect($types)->first(fn($t) => str($name)->contains($t))
+        $type = str($name)->contains(array_keys($types))
+            ? collect($types)->keys()->first(fn($t) => str($name)->contains($t))
             : $this->command->choice('Select the branch type', $types, 'feature');
 
-        $use = str($name)->contains($uses)
-            ? collect($uses)->first(fn($u) => str($name)->contains($u))
+        $use = str($name)->contains(array_keys($uses))
+            ? collect($uses)->keys()->first(fn($u) => str($name)->contains($u))
             : $this->command->choice('Select the branch is for', $uses, 'other');
 
         $prefix = $prefixes[$type] ?? $type;
 
-        if (str($name)->startsWith("$prefix/$use")) {
-            return $name;
-        }
+        return $this->formatBranchName($name, $type, $use, $prefix);
+    }
+
+    protected function formatBranchName($name, $type, $use, $prefix): string
+    {
+        $name = str($name)
+            ->replace($prefix, '')
+            ->replace($use, '')
+            ->replace("//", '/')
+            ->value();
 
         if ($use === 'other') {
             $name = str($name)->replace($use, '')->value();
