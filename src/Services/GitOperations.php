@@ -94,8 +94,8 @@ class GitOperations
     protected function formatBranchName($name, $type, $use, $prefix): string
     {
         $name = str($name)
-            ->replace($prefix, '')
-            ->replace($use, '')
+            ->replace("$prefix/", '')
+            ->replace("$use/", '')
             ->replace("//", '/')
             ->value();
 
