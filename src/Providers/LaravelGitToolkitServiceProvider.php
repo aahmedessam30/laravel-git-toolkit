@@ -9,6 +9,15 @@ use Ahmedessam\LaravelGitToolkit\Services\Git\GitRepository;
 use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
 use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
 use Ahmedessam\LaravelGitToolkit\Contracts\{GitRepositoryInterface, ConfigInterface};
+use Ahmedessam\LaravelGitToolkit\Actions\{GitActionRegistry};
+use Ahmedessam\LaravelGitToolkit\Actions\Git\{
+    PushAction,
+    PullAction,
+    BranchAction,
+    MergeAction,
+    CheckoutAction,
+    FetchAction
+};
 
 class LaravelGitToolkitServiceProvider extends ServiceProvider
 {
@@ -22,6 +31,29 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
         $this->app->singleton(BranchService::class);
         $this->app->singleton(CommitMessageBuilder::class);
 
+        // Git Actions
+        $this->app->bind(PushAction::class);
+        $this->app->bind(PullAction::class);
+        $this->app->bind(BranchAction::class);
+        $this->app->bind(MergeAction::class);
+        $this->app->bind(CheckoutAction::class);
+        $this->app->bind(FetchAction::class);
+
+        // Action Registry
+        $this->app->singleton(GitActionRegistry::class, function ($app) {
+            $registry = new GitActionRegistry();
+
+            // Register all git actions
+            $registry->register('push', PushAction::class);
+            $registry->register('pull', PullAction::class);
+            $registry->register('branch', BranchAction::class);
+            $registry->register('merge', MergeAction::class);
+            $registry->register('checkout', CheckoutAction::class);
+            $registry->register('fetch', FetchAction::class);
+
+            return $registry;
+        });
+
         // Bind legacy facades
         // Remove old facade binding as we now use dependency injection
         // $this->app->bind('git-toolkit', function () {
@@ -29,7 +61,10 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
         // });
 
         $this->app->bind('gitflow-toolkit', function () {
-            return new GitFlowToolkit();
+            return new GitFlowToolkit(
+                $this->app->make(GitRepositoryInterface::class),
+                $this->app->make(ConfigInterface::class)
+            );
         });
 
         $this->mergeConfigFrom(__DIR__ . '/../config/git-toolkit.php', 'git-toolkit');
