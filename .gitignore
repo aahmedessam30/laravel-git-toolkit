@@ -3,3 +3,6 @@
 /.idea
 /.vscode
 composer.lock
+/.github
+/prompt_collector.py
+/phpunit.xml

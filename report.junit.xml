@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="D:\Projects\laragon\www\laravel-git-toolkit\phpunit.xml" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.005842">
+    <testsuite name="Laravel Git Toolkit Test Suite" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.005842">
+      <testsuite name="Tests\Feature\ExampleTest" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.005842">
+        <testcase name="test_example" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\ExampleTest.php" line="9" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.005842"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

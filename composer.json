@@ -1,31 +1,43 @@
 {
-    "name": "ahmedessam/laravel-git-toolkit",
-    "description": "A toolkit for managing git repositories in Laravel applications.",
-    "type": "library",
-    "license": "MIT",
-    "require": {
-        "php": "^8.2",
-        "illuminate/support": "^11.0|^10.0|^9.0|^8.0",
-        "illuminate/console": "^11.0|^10.0|^9.0|^8.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Ahmedessam\\LaravelGitToolkit\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Ahmedessam\\LaravelGitToolkit\\Providers\\LaravelGitToolkitServiceProvider"
-            ]
-        }
-    },
-    "authors": [
-        {
-            "name": "Ahmed Essam",
-            "email": "aahmedessam30@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "prefer-stable": true
+  "name": "ahmedessam/laravel-git-toolkit",
+  "description": "A toolkit for managing git repositories in Laravel applications.",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^12.0|^11.0|^10.0|^9.0",
+    "illuminate/console": "^12.0|^11.0|^10.0|^9.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0|^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ahmedessam\\LaravelGitToolkit\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-html coverage"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Ahmedessam\\LaravelGitToolkit\\Providers\\LaravelGitToolkitServiceProvider"
+      ]
+    }
+  },
+  "authors": [
+    {
+      "name": "Ahmed Essam",
+      "email": "aahmedessam30@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
