@@ -2,7 +2,12 @@
 
 ![Laravel Git Toolkit](https://banners.beyondco.de/Laravel%20Git%20Toolkit.png?theme=light&packageManager=composer+require&packageName=ahmedessam%2Flaravel-git-toolkit&pattern=architect&style=style_1&description=Integrate+Git+operations+within+your+Laravel+projects+to+manage+Git+workflows+more+efficiently&md=1&showWatermark=1&fontSize=100px&images=code)
 
-Laravel Git Toolkit is a simple package that integrates Git operations within your Laravel projects. It provides commands to help manage Git workflows more efficiently, such as initializing Git flow branches, committing changes, and other Git-related tasks.
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/ahmedessam/laravel-git-toolkit.svg?style=flat-square)](https://packagist.org/packages/ahmedessam/laravel-git-toolkit)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/your-username/laravel-git-toolkit/run-tests?label=tests)](https://github.com/your-username/laravel-git-toolkit/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/your-username/laravel-git-toolkit/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/your-username/laravel-git-toolkit/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/ahmedessam/laravel-git-toolkit.svg?style=flat-square)](https://packagist.org/packages/ahmedessam/laravel-git-toolkit)
+
+Laravel Git Toolkit is a comprehensive package that integrates Git operations within your Laravel projects. It provides commands and services to help manage Git workflows more efficiently, with support for Git Flow, conventional commits, and modern Laravel architecture patterns.
 
 ## Installation
 
@@ -155,28 +160,105 @@ This command will reset changes from the remote repository.
 
 ## Features
 
-- Initialize Git flow branches
-- Commit changes and push them to the current branch
-- Create branches for features, fixes, releases, hotfixes or other custom branches
-- Pull changes from the remote repository
-- Merge branches
-- Delete branches
-- Push new branch to remote repository
-- Fetch changes from the remote repository
-- Rebase changes from the remote repository
-- Reset changes from the remote repository
+✨ **Core Git Operations**
+- Initialize Git flow branches with customizable naming
+- Commit changes with conventional commit messages
+- Create branches for features, fixes, releases, hotfixes, or custom types
+- Pull, push, merge, delete, fetch, rebase, and reset operations
+
+🏗️ **Modern Architecture**
+- Contract-based service architecture
+- Event-driven operations for extensibility
+- Pipeline validation system
+- Comprehensive exception handling
+- Dependency injection throughout
+
+🎯 **Laravel Integration**
+- Laravel 9-12 compatibility
+- Artisan command integration
+- Service provider with automatic discovery
+- Configuration management
+- Event system integration
 
 ## Requirements
 
-- Git should be installed on your machine
-- You should have a remote repository set up
-- You should have SSH keys set up for your remote repository
-- You should have a Laravel project set up
-- You should have a basic understanding of Git
+- PHP 8.2 or higher
+- Laravel 9.x, 10.x, 11.x, or 12.x
+- Git installed and configured
+- Remote repository access (SSH recommended)
+
+## Architecture
+
+### Contracts
+The package uses contract interfaces for clean dependency injection:
+
+```php
+// GitRepositoryInterface for Git operations
+app(GitRepositoryInterface::class)->getCurrentBranch();
+
+// ConfigInterface for configuration access  
+app(ConfigInterface::class)->get('commit_types');
+```
+
+### Events
+Listen to Git operations in your application:
+
+```php
+Event::listen(BranchCreated::class, function ($event) {
+    Log::info("Branch created: {$event->branchName}");
+});
+
+Event::listen(CommitPushed::class, function ($event) {
+    Log::info("Commit pushed: {$event->commitHash}");
+});
+```
+
+### Services
+Access core services directly:
+
+```php
+// Branch operations
+$branchService = app(BranchService::class);
+$branchName = $branchService->sanitizeBranchName('feature/my-feature');
+
+// Commit message building
+$commitBuilder = app(CommitMessageBuilder::class);
+$message = $commitBuilder->buildCommitMessage('feat', 'Add new feature');
+
+// Git repository operations
+$gitRepo = app(GitRepository::class);
+$branches = $gitRepo->getAllBranches();
+```
+
+## Testing
+
+Run the test suite:
+
+```bash
+composer test
+```
+
+Run tests with coverage:
+
+```bash
+composer test-coverage
+```
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details on how to contribute.
+
+## Security Vulnerabilities
+
+Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## License
 
-The Laravel Git Toolkit is open-sourced software licensed under the [MIT license](https://opensource.org/license/MIT).
+The Laravel Git Toolkit is open-sourced software licensed under the [MIT license](LICENSE).
 
 
 ## Author

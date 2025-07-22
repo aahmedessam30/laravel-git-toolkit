@@ -5,4 +5,6 @@
 composer.lock
 /.github
 /prompt_collector.py
-/phpunit.xml
+/.phpunit.result.cache
+/.env
+/.report.junit.xml

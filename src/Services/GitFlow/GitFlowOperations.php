@@ -17,7 +17,7 @@ class GitFlowOperations extends GitOperations
         $mainBranch = match (true) {
             $this->branchExists('master') => 'master',
             $this->branchExists('main')   => 'main',
-            default                             => null,
+            default                       => null,
         };
 
         if ($mainBranch === 'master') {
