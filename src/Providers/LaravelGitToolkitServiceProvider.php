@@ -16,7 +16,8 @@ use Ahmedessam\LaravelGitToolkit\Actions\Git\{
     BranchAction,
     MergeAction,
     CheckoutAction,
-    FetchAction
+    FetchAction,
+    RebaseAction
 };
 
 class LaravelGitToolkitServiceProvider extends ServiceProvider
@@ -38,6 +39,7 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
         $this->app->bind(MergeAction::class);
         $this->app->bind(CheckoutAction::class);
         $this->app->bind(FetchAction::class);
+        $this->app->bind(RebaseAction::class);
 
         // Action Registry
         $this->app->singleton(GitActionRegistry::class, function ($app) {
@@ -50,15 +52,10 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
             $registry->register('merge', MergeAction::class);
             $registry->register('checkout', CheckoutAction::class);
             $registry->register('fetch', FetchAction::class);
+            $registry->register('rebase', RebaseAction::class);
 
             return $registry;
         });
-
-        // Bind legacy facades
-        // Remove old facade binding as we now use dependency injection
-        // $this->app->bind('git-toolkit', function () {
-        //     return new GitToolkit();
-        // });
 
         $this->app->bind('gitflow-toolkit', function () {
             return new GitFlowToolkit(

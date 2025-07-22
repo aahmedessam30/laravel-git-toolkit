@@ -52,12 +52,10 @@ class GitFlowToolkit extends GitFlowOperations
 
         $branches = array_merge($branches, $this->createOptionalBranches());
 
-        if (empty(array_diff($branches, $this->existedBranches))) {
-            $this->components->info('Git Flow branches initialized successfully.');
-            return;
-        }
+        // Always check for unpublished branches and offer to push them
+        $this->components->info('Checking for unpublished branches...');
 
-        if ($this->components->confirm('Do you want to push the branches to the remote?', true)) {
+        if ($this->components->confirm('Do you want to publish any unpublished branches to remote?', true)) {
             $this->pushBranches($branches);
         }
 

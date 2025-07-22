@@ -10,6 +10,7 @@ use Ahmedessam\LaravelGitToolkit\Actions\Git\BranchAction;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\MergeAction;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\CheckoutAction;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\FetchAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\RebaseAction;
 
 class GitActionRegistryIntegrationTest extends TestCase
 {
@@ -25,7 +26,8 @@ class GitActionRegistryIntegrationTest extends TestCase
             'branch',
             'merge',
             'checkout',
-            'fetch'
+            'fetch',
+            'rebase'
         ];
 
         $this->assertEquals($expectedActions, $supportedActions);
@@ -42,6 +44,7 @@ class GitActionRegistryIntegrationTest extends TestCase
             'merge' => MergeAction::class,
             'checkout' => CheckoutAction::class,
             'fetch' => FetchAction::class,
+            'rebase' => RebaseAction::class,
         ];
 
         foreach ($actions as $actionName => $expectedClass) {

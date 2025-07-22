@@ -43,9 +43,9 @@ class BranchAction extends BaseGitAction
             return $this->branchService->sanitizeBranchName($options['branch']);
         }
 
-        $type = $io->choice('Branch type:', array_keys($this->config->getBranchTypes()));
-        $name = $io->ask('Branch name:');
-        $use = $io->ask('Feature area (optional):', 'general');
+        $type   = $io->choice('Branch type:', array_keys($this->config->getBranchTypes()));
+        $name   = $io->ask('Branch name:');
+        $use    = $io->ask('Feature area (optional):', 'general');
         $prefix = $io->ask('Prefix (optional):') ?? '';
 
         return $this->branchService->formatBranchName($name, $type, $use, $prefix);

@@ -10,13 +10,15 @@ use Mockery;
 class ArtisanConsoleIOTest extends TestCase
 {
     private $mockCommand;
+    private $mockComponents;
     private ArtisanConsoleIO $consoleIO;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->mockCommand = Mockery::mock(Command::class);
-        $this->consoleIO = new ArtisanConsoleIO($this->mockCommand);
+        $this->mockComponents = Mockery::mock();
+        $this->consoleIO = new ArtisanConsoleIO($this->mockCommand, $this->mockComponents);
     }
 
     public function test_ask_delegates_to_command()
@@ -59,7 +61,7 @@ class ArtisanConsoleIOTest extends TestCase
 
     public function test_info_delegates_to_command()
     {
-        $this->mockCommand->shouldReceive('info')
+        $this->mockComponents->shouldReceive('info')
             ->with('Information message')
             ->once();
 
@@ -70,7 +72,7 @@ class ArtisanConsoleIOTest extends TestCase
 
     public function test_error_delegates_to_command()
     {
-        $this->mockCommand->shouldReceive('error')
+        $this->mockComponents->shouldReceive('error')
             ->with('Error message')
             ->once();
 
@@ -81,7 +83,7 @@ class ArtisanConsoleIOTest extends TestCase
 
     public function test_warn_delegates_to_command()
     {
-        $this->mockCommand->shouldReceive('warn')
+        $this->mockComponents->shouldReceive('warn')
             ->with('Warning message')
             ->once();
 
@@ -92,7 +94,7 @@ class ArtisanConsoleIOTest extends TestCase
 
     public function test_confirm_delegates_to_command()
     {
-        $this->mockCommand->shouldReceive('confirm')
+        $this->mockComponents->shouldReceive('confirm')
             ->with('Are you sure?', false)
             ->once()
             ->andReturn(true);
@@ -104,7 +106,7 @@ class ArtisanConsoleIOTest extends TestCase
 
     public function test_confirm_with_default_delegates_to_command()
     {
-        $this->mockCommand->shouldReceive('confirm')
+        $this->mockComponents->shouldReceive('confirm')
             ->with('Are you sure?', true)
             ->once()
             ->andReturn(false);

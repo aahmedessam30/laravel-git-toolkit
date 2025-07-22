@@ -2,6 +2,41 @@
 
 All notable changes to `laravel-git-toolkit` will be documented in this file.
 
+## [v2.1.0] - 2025-07-23
+
+### 🚀 Enhanced Merge Operations & User Experience
+
+#### Added
+
+- **Multi-Branch Merge Support**: Enhanced `MergeAction` to support merging into multiple target branches
+- **Auto-Push After Merge**: Automatic push to remote repository after successful merge operations
+- **Meaningful Option Names**: Added `--source` and `--target` options for better clarity
+- **Backward Compatibility**: Maintained support for legacy `--merge` and `--branch` options
+- **Enhanced Error Handling**: Improved error messages and validation for merge operations
+- **Shell Argument Validation**: Smart detection and helpful error messages for command-line parsing issues
+- **Visual Feedback**: Added emoji indicators for merge and push operation status
+- **Clean Code Refactoring**: Applied SOLID principles and method decomposition to MergeAction
+
+#### Changed
+
+- **MergeAction Enhancement**: Complete refactoring with method decomposition and constants
+- **Command Options**: Added `--source` and `--target` options while preserving existing ones
+- **Error Messages**: More descriptive and actionable error messages for users
+- **Code Quality**: Improved maintainability through SRP compliance and enhanced structure
+
+#### Fixed
+
+- **Empty Source Branch Handling**: Fixed issue where pressing Enter without input caused merge failures
+- **Type Safety**: Resolved ProcessResult vs string type compatibility issues
+- **Shell Parsing**: Enhanced validation for comma-separated branch arguments with spaces
+
+#### Technical Improvements
+
+- **Method Decomposition**: Split complex methods into focused, single-responsibility functions
+- **Constants Usage**: Implemented constants for emoji indicators and magic strings
+- **Error Recovery**: Better error handling with detailed user guidance
+- **Input Validation**: Enhanced validation for command-line arguments and user input
+
 ## [v2.0.0] - 2025-07-22
 
 ### 🚀 Major Release - Complete Architecture Refactoring

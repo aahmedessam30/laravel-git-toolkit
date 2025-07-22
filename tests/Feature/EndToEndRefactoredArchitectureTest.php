@@ -20,6 +20,10 @@ class EndToEndRefactoredArchitectureTest extends TestCase
         $mockRepository->shouldReceive('getCurrentBranch')->andReturn('main');
         $mockRepository->shouldReceive('executeGitCommand')->andReturn('Success');
 
+        // Mock validation methods for PushAction
+        $mockRepository->shouldReceive('hasUncommittedChanges')->andReturn(true);
+        $mockRepository->shouldReceive('hasUnpushedCommits')->andReturn(false);
+
         $this->app->instance(GitRepositoryInterface::class, $mockRepository);
     }
 

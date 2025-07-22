@@ -20,6 +20,10 @@ class RefactoringSuccessTest extends TestCase
         $mockRepository->shouldReceive('getCurrentBranch')->andReturn('main');
         $mockRepository->shouldReceive('executeGitCommand')->andReturn('Mocked git output');
 
+        // Mock validation methods for PushAction
+        $mockRepository->shouldReceive('hasUncommittedChanges')->andReturn(true);
+        $mockRepository->shouldReceive('hasUnpushedCommits')->andReturn(false);
+
         $this->app->instance(GitRepositoryInterface::class, $mockRepository);
     }
 

@@ -20,6 +20,11 @@ interface ConsoleIOInterface
     public function info(string $message): void;
 
     /**
+     * Display a success message
+     */
+    public function success(string $message): void;
+
+    /**
      * Display an error message
      */
     public function error(string $message): void;

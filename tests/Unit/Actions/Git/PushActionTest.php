@@ -49,6 +49,15 @@ class PushActionTest extends TestCase
     {
         $options = ['message' => 'Test commit message', 'branch' => 'main'];
 
+        // Mock validation methods
+        $this->mockRepository->shouldReceive('hasUncommittedChanges')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(true);
+
+        $this->mockRepository->shouldReceive('hasUnpushedCommits')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(false);
+
         $this->mockRepository->shouldReceive('executeGitCommand')
             ->with(['add', '.'])
             ->once()
@@ -65,6 +74,10 @@ class PushActionTest extends TestCase
             ->andReturn('Pushed successfully');
 
         $this->mockConsoleIO->shouldReceive('info')
+            ->with('Changes committed successfully.')
+            ->once();
+
+        $this->mockConsoleIO->shouldReceive('info')
             ->with('Pushed to branch: main')
             ->once();
 
@@ -72,12 +85,21 @@ class PushActionTest extends TestCase
 
         $this->assertInstanceOf(ActionResult::class, $result);
         $this->assertTrue($result->isSuccess());
-        $this->assertEquals('Successfully pushed to main', $result->getMessage());
+        $this->assertEquals('Successfully committed and pushed to main', $result->getMessage());
     }
 
     public function test_execute_with_interactive_message()
     {
         $options = ['message' => null, 'branch' => 'feature'];
+
+        // Mock validation methods
+        $this->mockRepository->shouldReceive('hasUncommittedChanges')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(true);
+
+        $this->mockRepository->shouldReceive('hasUnpushedCommits')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(false);
 
         $this->mockConfig->shouldReceive('shouldUseDefaultMessage')
             ->once()
@@ -109,6 +131,10 @@ class PushActionTest extends TestCase
             ->andReturn('Pushed successfully');
 
         $this->mockConsoleIO->shouldReceive('info')
+            ->with('Changes committed successfully.')
+            ->once();
+
+        $this->mockConsoleIO->shouldReceive('info')
             ->with('Pushed to branch: feature')
             ->once();
 
@@ -119,12 +145,21 @@ class PushActionTest extends TestCase
         $result = $this->pushAction->execute($options, $this->mockConsoleIO);
 
         $this->assertTrue($result->isSuccess());
-        $this->assertEquals('Successfully pushed to feature', $result->getMessage());
+        $this->assertEquals('Successfully committed and pushed to feature', $result->getMessage());
     }
 
     public function test_execute_with_default_message()
     {
         $options = ['message' => null, 'branch' => null];
+
+        // Mock validation methods
+        $this->mockRepository->shouldReceive('hasUncommittedChanges')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(true);
+
+        $this->mockRepository->shouldReceive('hasUnpushedCommits')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(false);
 
         $this->mockConfig->shouldReceive('shouldUseDefaultMessage')
             ->once()
@@ -154,6 +189,10 @@ class PushActionTest extends TestCase
             ->andReturn('Pushed successfully');
 
         $this->mockConsoleIO->shouldReceive('info')
+            ->with('Changes committed successfully.')
+            ->once();
+
+        $this->mockConsoleIO->shouldReceive('info')
             ->with('Pushed to branch: main')
             ->once();
 
@@ -170,6 +209,15 @@ class PushActionTest extends TestCase
     {
         $options = ['message' => 'Test message', 'branch' => 'main'];
 
+        // Mock validation methods for exception case - return true so we proceed to git commands
+        $this->mockRepository->shouldReceive('hasUncommittedChanges')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(true);
+
+        $this->mockRepository->shouldReceive('hasUnpushedCommits')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(false);
+
         $this->mockRepository->shouldReceive('executeGitCommand')
             ->with(['add', '.'])
             ->once()
@@ -184,5 +232,62 @@ class PushActionTest extends TestCase
         $this->assertInstanceOf(ActionResult::class, $result);
         $this->assertFalse($result->isSuccess());
         $this->assertEquals('Push failed: Git command failed', $result->getMessage());
+    }
+
+    public function test_execute_with_no_changes_to_push()
+    {
+        $options = ['message' => 'Test message', 'branch' => 'main'];
+
+        // Mock validation methods - no changes to commit or push
+        $this->mockRepository->shouldReceive('hasUncommittedChanges')
+            ->once()
+            ->andReturn(false);
+
+        $this->mockRepository->shouldReceive('hasUnpushedCommits')
+            ->once()
+            ->andReturn(false);
+
+        $this->mockConsoleIO->shouldReceive('info')
+            ->with('No changes to commit or push.')
+            ->once();
+
+        $result = $this->pushAction->execute($options, $this->mockConsoleIO);
+
+        $this->assertInstanceOf(ActionResult::class, $result);
+        $this->assertTrue($result->isSuccess());
+        $this->assertEquals('Repository is up to date - nothing to push', $result->getMessage());
+    }
+
+    public function test_execute_with_unpushed_commits_only()
+    {
+        $options = ['message' => 'Test message', 'branch' => 'main'];
+
+        // Mock validation methods - has unpushed commits but no uncommitted changes
+        $this->mockRepository->shouldReceive('hasUncommittedChanges')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(false);
+
+        $this->mockRepository->shouldReceive('hasUnpushedCommits')
+            ->once()  // Called once in analyzeRepositoryState
+            ->andReturn(true);
+
+        $this->mockRepository->shouldReceive('executeGitCommand')
+            ->with(['push', 'origin', 'main'])
+            ->once()
+            ->andReturn('Pushed successfully');
+
+        $this->mockConsoleIO->shouldReceive('info')
+            ->with('Found unpushed commits. Pushing existing commits to remote...')
+            ->once();
+
+        $this->mockConsoleIO->shouldReceive('info')
+            ->with('Pushed existing commits to branch: main')
+            ->once();
+
+        $result = $this->pushAction->execute($options, $this->mockConsoleIO);
+
+        $this->assertInstanceOf(ActionResult::class, $result);
+        $this->assertTrue($result->isSuccess());
+        $this->assertEquals('Successfully pushed existing commits to main', $result->getMessage());
     }
 }

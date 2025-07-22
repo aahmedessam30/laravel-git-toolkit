@@ -15,7 +15,9 @@ class GitCommand extends Command
     {--type= : The commit type}
     {--merge= : The branch name to merge} 
     {--return= : The branch name to return to}
-    {--commit= : The commit to reset to}';
+    {--commit= : The commit to reset to}
+    {--source= : The source branch to merge from}
+    {--target= : The target branch(es) to merge into (comma-separated)}';
 
     protected $description = 'Execute git commands from the console';
 
@@ -28,8 +30,8 @@ class GitCommand extends Command
     public function handle(): int
     {
         try {
-            $action = $this->argument('action');
-            $consoleIO = new ArtisanConsoleIO($this);
+            $action    = $this->argument('action');
+            $consoleIO = new ArtisanConsoleIO($this, $this->components);
 
             // Show available actions if none provided
             if (!$action) {
@@ -39,7 +41,7 @@ class GitCommand extends Command
 
             // Execute the action through the registry
             $gitAction = $this->actionRegistry->resolve($action);
-            $result = $gitAction->execute($this->options(), $consoleIO);
+            $result    = $gitAction->execute($this->options(), $consoleIO);
 
             if ($result->isSuccess()) {
                 $this->components->info($result->getMessage());

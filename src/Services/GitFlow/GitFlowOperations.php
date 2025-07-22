@@ -46,16 +46,17 @@ class GitFlowOperations
         }
 
         if ($mainBranch === 'main') {
-            $this->components->warn('Main branch found. It is recommended to use main as the main branch.');
+            $this->components->info('Main branch found.');
         }
 
         if (!$mainBranch) {
-            $this->components->ask('No main branch found. Please enter the main branch name', 'main');
+            $mainBranch = $this->command->ask('No main branch found. Please enter the main branch name', 'main');
+            $this->existedBranches[] = $mainBranch;
+            $this->components->info("Main branch is $mainBranch.");
             return $mainBranch;
         }
 
         $this->existedBranches[] = $mainBranch;
-
         $this->components->info("Main branch is $mainBranch.");
 
         return null;
@@ -103,17 +104,86 @@ class GitFlowOperations
      */
     protected function pushBranches(array $branches): void
     {
+        $unpublishedBranches = [];
+
+        // Check which branches are not published to remote
         foreach ($branches as $branch) {
-            if ($this->branchExists($branch)) {
-                $this->components->warn("Branch $branch already exists on remote 🤷‍♂️...");
+            if (!$this->remoteBranchExists($branch)) {
+                $unpublishedBranches[] = $branch;
+            }
+        }
+
+        if (empty($unpublishedBranches)) {
+            $this->components->info('All branches are already published to remote.');
+            return;
+        }
+
+        $this->components->info(sprintf(
+            'Found %d unpublished branch(es): %s',
+            count($unpublishedBranches),
+            implode(', ', $unpublishedBranches)
+        ));
+
+        // Push unpublished branches
+        foreach ($unpublishedBranches as $branch) {
+            try {
+                $this->executeCommand(
+                    "push -u origin $branch",
+                    "Branch $branch pushed to remote 🚀...",
+                    "Failed to push branch $branch 🤷‍♂️..."
+                );
+            } catch (\Exception $e) {
+                $this->components->error("Failed to push branch $branch: " . $e->getMessage());
+                // Continue with next branch instead of stopping
                 continue;
             }
+        }
+    }
 
-            $this->executeCommand(
-                "push -u origin $branch",
-                "Branch $branch pushed to remote 🚀...",
-                "Failed to push branch $branch 🤷‍♂️..."
-            );
+    /**
+     * Get Git Flow configuration value
+     */
+    protected function getFlowConfig(string $key, mixed $default = null): mixed
+    {
+        return $this->config->get("git_flow.{$key}", $default);
+    }
+
+    /**
+     * Check if a branch exists locally
+     */
+    protected function branchExists(string $branch): bool
+    {
+        return $this->repository->branchExists($branch);
+    }
+
+    /**
+     * Check if a branch exists on remote
+     */
+    protected function remoteBranchExists(string $branch): bool
+    {
+        try {
+            $this->repository->executeGitCommand(['ls-remote', '--exit-code', 'origin', $branch]);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Execute a git command with feedback
+     */
+    protected function executeCommand(string $command, string $successMessage = '', string $errorMessage = ''): void
+    {
+        try {
+            $this->repository->executeGitCommand(explode(' ', $command));
+            if ($successMessage) {
+                $this->components->info($successMessage);
+            }
+        } catch (\Exception $e) {
+            if ($errorMessage) {
+                $this->components->error($errorMessage);
+            }
+            throw $e;
         }
     }
 }
