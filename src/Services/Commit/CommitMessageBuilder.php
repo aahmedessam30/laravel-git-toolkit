@@ -32,12 +32,17 @@ class CommitMessageBuilder
         return $this->buildInteractiveMessage($type, $message, $currentBranch);
     }
 
+    public function buildInteractiveCommitMessage(?string $currentBranch = null): string
+    {
+        return $this->buildInteractiveMessage(null, null, $currentBranch);
+    }
+
     protected function buildDefaultMessage(?string $type, ?string $currentBranch): string
     {
         $type = $type ?? $this->config->getDefaultCommitType();
         $template = $this->config->get('default_commit_message', 'Update [%s] branch with latest changes.');
-        $message = str_contains($template, '%s') 
-            ? sprintf($template, $currentBranch ?? 'current') 
+        $message = str_contains($template, '%s')
+            ? sprintf($template, $currentBranch ?? 'current')
             : $template;
 
         return $this->formatCommitMessage($type, $message);
@@ -49,7 +54,7 @@ class CommitMessageBuilder
         if (!$message) {
             $defaultTemplate = $this->config->get('default_commit_message', 'Update [%s] branch with latest changes.');
             $defaultMessage = sprintf($defaultTemplate, $currentBranch ?? 'current');
-            
+
             $message = $this->command->ask(
                 sprintf('Enter the commit message, Leave empty to use the default message [%s]', $defaultMessage)
             ) ?: $defaultMessage;

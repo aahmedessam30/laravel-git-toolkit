@@ -17,15 +17,16 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
         // Bind contracts to implementations
         $this->app->singleton(ConfigInterface::class, GitToolkitConfig::class);
         $this->app->singleton(GitRepositoryInterface::class, GitRepository::class);
-        
+
         // Bind services
         $this->app->singleton(BranchService::class);
         $this->app->singleton(CommitMessageBuilder::class);
 
         // Bind legacy facades
-        $this->app->bind('git-toolkit', function () {
-            return new GitToolkit();
-        });
+        // Remove old facade binding as we now use dependency injection
+        // $this->app->bind('git-toolkit', function () {
+        //     return new GitToolkit();
+        // });
 
         $this->app->bind('gitflow-toolkit', function () {
             return new GitFlowToolkit();

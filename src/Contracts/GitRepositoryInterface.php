@@ -17,7 +17,7 @@ interface GitRepositoryInterface
     /**
      * Execute a git command
      */
-    public function executeGitCommand(string $command): mixed;
+    public function executeGitCommand(array|string $command): mixed;
 
     /**
      * Check if there are uncommitted changes

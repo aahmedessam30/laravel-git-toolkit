@@ -58,4 +58,14 @@ interface ConfigInterface
      * Get default branches array
      */
     public function getDefaultBranches(): array;
+
+    /**
+     * Get default commit message
+     */
+    public function getDefaultCommitMessage(): string;
+
+    /**
+     * Get branch types configuration
+     */
+    public function getBranchTypes(): array;
 }

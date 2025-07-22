@@ -2,12 +2,28 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Services\GitFlow;
 
-use Ahmedessam\LaravelGitToolkit\Services\GitOperations;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 
-class GitFlowOperations extends GitOperations
+class GitFlowOperations
 {
     protected array $existedBranches = [];
+    protected Command $command;
+    protected mixed $components;
+
+    public function __construct(
+        protected GitRepositoryInterface $repository,
+        protected ConfigInterface $config
+    ) {}
+
+    public function setCommand(Command $command, mixed $components = null): self
+    {
+        $this->command = $command;
+        $this->components = $components;
+        return $this;
+    }
 
     /**
      * @throws \Exception

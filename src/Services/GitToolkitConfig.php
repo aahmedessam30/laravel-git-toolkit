@@ -66,4 +66,20 @@ class GitToolkitConfig implements ConfigInterface
     {
         return $this->get('default_branches', ['main', 'master', 'develop', 'staging', 'hotfix']);
     }
+
+    public function getDefaultCommitMessage(): string
+    {
+        return $this->get('default_commit_message', 'Update [%s] branch with latest changes.');
+    }
+
+    public function getBranchTypes(): array
+    {
+        return $this->get('branch_types', [
+            'feature' => 'Feature development',
+            'bugfix' => 'Bug fixes',
+            'hotfix' => 'Critical hotfixes',
+            'release' => 'Release preparation',
+            'chore' => 'Maintenance tasks'
+        ]);
+    }
 }

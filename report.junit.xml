@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="D:\Projects\laragon\www\laravel-git-toolkit\phpunit.xml" tests="9" assertions="18" errors="0" failures="0" skipped="0" time="0.402317">
-    <testsuite name="Laravel Git Toolkit Test Suite" tests="9" assertions="18" errors="0" failures="0" skipped="0" time="0.402317">
-      <testsuite name="Tests\Feature\GitToolkitConfigTest" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" tests="4" assertions="12" errors="0" failures="0" skipped="0" time="0.281102">
-        <testcase name="test_can_get_commit_emoji" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="27" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="2" time="0.215607"/>
-        <testcase name="test_can_get_default_branches" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="34" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="3" time="0.022749"/>
-        <testcase name="test_boolean_configs_return_proper_types" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="42" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="5" time="0.022176"/>
-        <testcase name="test_can_get_default_commit_type" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="19" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="2" time="0.020571"/>
+  <testsuite name="D:\Projects\laragon\www\laravel-git-toolkit\phpunit.xml" tests="8" assertions="17" errors="0" failures="0" skipped="0" time="0.309768">
+    <testsuite name="Laravel Git Toolkit Test Suite" tests="8" assertions="17" errors="0" failures="0" skipped="0" time="0.309768">
+      <testsuite name="Tests\Feature\GitToolkitConfigTest" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" tests="4" assertions="12" errors="0" failures="0" skipped="0" time="0.249482">
+        <testcase name="test_can_get_default_commit_type" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="19" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="2" time="0.216290"/>
+        <testcase name="test_boolean_configs_return_proper_types" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="42" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="5" time="0.010714"/>
+        <testcase name="test_can_get_default_branches" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="34" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="3" time="0.011837"/>
+        <testcase name="test_can_get_commit_emoji" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\GitToolkitConfigTest.php" line="27" class="Tests\Feature\GitToolkitConfigTest" classname="Tests.Feature.GitToolkitConfigTest" assertions="2" time="0.010641"/>
       </testsuite>
-      <testsuite name="Tests\Unit\BranchServiceTest" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" tests="4" assertions="5" errors="0" failures="0" skipped="0" time="0.101497">
-        <testcase name="test_format_branch_name_creates_proper_structure" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="40" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="1" time="0.037839"/>
-        <testcase name="test_sanitize_branch_name_removes_invalid_characters" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="28" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="1" time="0.015708"/>
-        <testcase name="test_sanitize_branch_name_throws_exception_for_empty_result" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="34" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="1" time="0.020680"/>
-        <testcase name="test_is_default_branch_returns_correct_result" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="46" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="2" time="0.027270"/>
-      </testsuite>
-      <testsuite name="Tests\Feature\ExampleTest" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.019718">
-        <testcase name="test_example" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Feature\ExampleTest.php" line="9" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.019718"/>
+      <testsuite name="Tests\Unit\BranchServiceTest" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" tests="4" assertions="5" errors="0" failures="0" skipped="0" time="0.060286">
+        <testcase name="test_sanitize_branch_name_removes_invalid_characters" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="28" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="1" time="0.019907"/>
+        <testcase name="test_format_branch_name_creates_proper_structure" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="40" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="1" time="0.011390"/>
+        <testcase name="test_sanitize_branch_name_throws_exception_for_empty_result" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="34" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="1" time="0.012732"/>
+        <testcase name="test_is_default_branch_returns_correct_result" file="D:\Projects\laragon\www\laravel-git-toolkit\tests\Unit\BranchServiceTest.php" line="46" class="Tests\Unit\BranchServiceTest" classname="Tests.Unit.BranchServiceTest" assertions="2" time="0.016257"/>
       </testsuite>
     </testsuite>
   </testsuite>

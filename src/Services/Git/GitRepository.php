@@ -26,10 +26,14 @@ class GitRepository implements GitRepositoryInterface
         return !empty(trim($result->output()));
     }
 
-    public function executeGitCommand(string $command): mixed
+    public function executeGitCommand(array|string $command): mixed
     {
         if (!$this->isGitRepository()) {
             throw new GitRepositoryNotFound(getcwd());
+        }
+
+        if (is_array($command)) {
+            $command = implode(' ', array_map('escapeshellarg', $command));
         }
 
         $fullCommand = "git {$command}";
