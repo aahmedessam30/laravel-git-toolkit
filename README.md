@@ -3,8 +3,7 @@
 ![Laravel Git Toolkit](https://banners.beyondco.de/Laravel%20Git%20Toolkit.png?theme=light&packageManager=composer+require&packageName=ahmedessam%2Flaravel-git-toolkit&pattern=architect&style=style_1&description=Integrate+Git+operations+within+your+Laravel+projects+to+manage+Git+workflows+more+efficiently&md=1&showWatermark=1&fontSize=100px&images=code)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ahmedessam/laravel-git-toolkit.svg?style=flat-square)](https://packagist.org/packages/ahmedessam/laravel-git-toolkit)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/your-username/laravel-git-toolkit/run-tests?label=tests)](https://github.com/your-username/laravel-git-toolkit/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/your-username/laravel-git-toolkit/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/your-username/laravel-git-toolkit/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Tests](https://img.shields.io/github/actions/workflow/status/aahmedessam30/laravel-git-toolkit/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/aahmedessam30/laravel-git-toolkit/actions/workflows/tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmedessam/laravel-git-toolkit.svg?style=flat-square)](https://packagist.org/packages/ahmedessam/laravel-git-toolkit)
 
 Laravel Git Toolkit is a comprehensive package that integrates Git operations within your Laravel projects. It provides commands and services to help manage Git workflows more efficiently, with support for Git Flow, conventional commits, and modern Laravel architecture patterns.
@@ -174,7 +173,7 @@ This command will reset changes from the remote repository.
 - Dependency injection throughout
 
 🎯 **Laravel Integration**
-- Laravel 9-12 compatibility
+- Laravel 10-13 compatibility
 - Artisan command integration
 - Service provider with automatic discovery
 - Configuration management
@@ -183,7 +182,7 @@ This command will reset changes from the remote repository.
 ## Requirements
 
 - PHP 8.2 or higher
-- Laravel 9.x, 10.x, 11.x, or 12.x
+- Laravel 10.x, 11.x, 12.x, or 13.x (Laravel 13 requires PHP 8.3+)
 - Git installed and configured
 - Remote repository access (SSH recommended)
 

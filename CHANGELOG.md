@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-git-toolkit` will be documented in this file.
 
+## [v2.2.0] - 2026-10-02
+
+### Added
+
+- Laravel 13 support (`illuminate/support` and `illuminate/console` `^13.0`). Laravel 13 requires PHP 8.3 or newer.
+- GitHub Actions test workflow covering PHP 8.2–8.5, Laravel 12 and 13, Linux and Windows, with lowest and stable dependencies.
+
+### Changed
+
+- Development dependencies: `orchestra/testbench` `^10.0|^11.0` and `phpunit/phpunit` `^11.5.3|^12.0`. The test suite now runs on Laravel 12 and 13.
+- README: compatibility now lists Laravel 10–13. Laravel 9 is no longer listed because the package relies on the Process facade introduced in Laravel 10.
+- README: fixed the tests badge.
+
 ## [v2.1.0] - 2025-07-23
 
 ### 🚀 Enhanced Merge Operations & User Experience
