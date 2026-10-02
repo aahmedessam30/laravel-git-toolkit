@@ -65,7 +65,7 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
             );
         });
 
-        $this->mergeConfigFrom(__DIR__.'/../config/git-toolkit.php', 'git-toolkit');
+        $this->mergeConfigFrom(__DIR__.'/../../config/git-toolkit.php', 'git-toolkit');
     }
 
     public function boot(): void
@@ -76,7 +76,7 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            __DIR__.'/../config/git-toolkit.php' => $this->app->configPath('git-toolkit.php'),
+            __DIR__.'/../../config/git-toolkit.php' => $this->app->configPath('git-toolkit.php'),
         ], 'git-toolkit-config');
     }
 }

@@ -35,9 +35,3 @@ parameters:
 			identifier: nullCoalesce.expr
 			count: 1
 			path: src/Services/Console/ArtisanConsoleIO.php
-
-		-
-			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
-			identifier: larastan.noEnvCallsOutsideOfConfig
-			count: 9
-			path: src/config/git-toolkit.php
