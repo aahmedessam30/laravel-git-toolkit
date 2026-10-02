@@ -2,15 +2,17 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Exceptions;
 
-class GitCommandFailed extends LaravelGitToolkitException
+use Ahmedessam\LaravelGitToolkit\Git\GitResult;
+
+class GitCommandFailed extends GitToolkitException
 {
-    public function __construct(string $command, string $error = '')
+    public function __construct(public readonly GitResult $result)
     {
-        $message = "Git command failed: {$command}";
-        if ($error) {
-            $message .= " - Error: {$error}";
+        $message = trim($result->errorOutput);
+        if ($message === '') {
+            $message = trim($result->output);
         }
 
-        parent::__construct($message);
+        parent::__construct('git '.implode(' ', $result->command).': '.$message);
     }
 }

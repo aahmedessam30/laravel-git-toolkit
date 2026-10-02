@@ -5,6 +5,7 @@ namespace Ahmedessam\LaravelGitToolkit\Services\Git;
 use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Exceptions\GitCommandFailed;
 use Ahmedessam\LaravelGitToolkit\Exceptions\GitRepositoryNotFound;
+use Ahmedessam\LaravelGitToolkit\Git\GitResult;
 use Illuminate\Support\Facades\Process;
 
 class GitRepository implements GitRepositoryInterface
@@ -30,8 +31,10 @@ class GitRepository implements GitRepositoryInterface
     public function executeGitCommand(array|string $command): mixed
     {
         if (! $this->isGitRepository()) {
-            throw new GitRepositoryNotFound(getcwd());
+            throw new GitRepositoryNotFound((string) getcwd());
         }
+
+        $arguments = is_array($command) ? $command : [$command];
 
         if (is_array($command)) {
             $command = implode(' ', array_map('escapeshellarg', $command));
@@ -41,7 +44,12 @@ class GitRepository implements GitRepositoryInterface
         $result = Process::run($fullCommand);
 
         if ($result->failed()) {
-            throw new GitCommandFailed($fullCommand, $result->errorOutput());
+            throw new GitCommandFailed(new GitResult(
+                command: $arguments,
+                output: $result->output(),
+                errorOutput: $result->errorOutput(),
+                exitCode: $result->exitCode(),
+            ));
         }
 
         return $result;

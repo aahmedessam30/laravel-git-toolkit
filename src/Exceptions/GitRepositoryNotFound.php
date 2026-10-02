@@ -2,14 +2,10 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Exceptions;
 
-class GitRepositoryNotFound extends LaravelGitToolkitException
+class GitRepositoryNotFound extends GitToolkitException
 {
-    public function __construct(?string $path = null)
+    public function __construct(string $path)
     {
-        $message = $path
-            ? "Git repository not found in path: {$path}"
-            : 'This is not a git repository. Please initialize Git first.';
-
-        parent::__construct($message);
+        parent::__construct("No git repository found at [{$path}].");
     }
 }
