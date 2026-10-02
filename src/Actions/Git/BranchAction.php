@@ -2,16 +2,18 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
-use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
-use Ahmedessam\LaravelGitToolkit\Events\BranchCreated;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Ahmedessam\LaravelGitToolkit\Events\BranchCreated;
+use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
 
 class BranchAction extends BaseGitAction
 {
     public function __construct(
-        protected \Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface $repository,
-        protected \Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface $config,
+        protected GitRepositoryInterface $repository,
+        protected ConfigInterface $config,
         private BranchService $branchService
     ) {
         parent::__construct($repository, $config);
@@ -29,11 +31,12 @@ class BranchAction extends BaseGitAction
             $io->info("Created and switched to branch: {$branchName}");
 
             return $this->success("Successfully created branch {$branchName}", [
-                'branch' => $branchName
+                'branch' => $branchName,
             ]);
         } catch (\Exception $e) {
-            $io->error("Branch creation failed: " . $e->getMessage());
-            return $this->failure("Branch creation failed: " . $e->getMessage());
+            $io->error('Branch creation failed: '.$e->getMessage());
+
+            return $this->failure('Branch creation failed: '.$e->getMessage());
         }
     }
 
@@ -43,9 +46,9 @@ class BranchAction extends BaseGitAction
             return $this->branchService->sanitizeBranchName($options['branch']);
         }
 
-        $type   = $io->choice('Branch type:', array_keys($this->config->getBranchTypes()));
-        $name   = $io->ask('Branch name:');
-        $use    = $io->ask('Feature area (optional):', 'general');
+        $type = $io->choice('Branch type:', array_keys($this->config->getBranchTypes()));
+        $name = $io->ask('Branch name:');
+        $use = $io->ask('Feature area (optional):', 'general');
         $prefix = $io->ask('Prefix (optional):') ?? '';
 
         return $this->branchService->formatBranchName($name, $type, $use, $prefix);

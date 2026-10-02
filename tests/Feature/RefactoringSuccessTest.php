@@ -2,12 +2,16 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
 use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
 use Ahmedessam\LaravelGitToolkit\Console\Commands\GitCommand;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitActionInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
-use Illuminate\Support\Facades\Artisan;
+use Ahmedessam\LaravelGitToolkit\Services\Console\ArtisanConsoleIO;
+use Illuminate\Console\Command;
 use Mockery;
+use Tests\TestCase;
 
 class RefactoringSuccessTest extends TestCase
 {
@@ -53,7 +57,7 @@ class RefactoringSuccessTest extends TestCase
         $this->assertLessThan(10, count($ourMethods), 'GitCommand should have fewer methods after refactoring');
 
         // Verify we have the essential methods
-        $methodNames = array_map(fn($method) => $method->getName(), $ourMethods);
+        $methodNames = array_map(fn ($method) => $method->getName(), $ourMethods);
         $this->assertContains('handle', $methodNames);
         $this->assertContains('displayAvailableActions', $methodNames);
     }
@@ -79,7 +83,7 @@ class RefactoringSuccessTest extends TestCase
             $action = $registry->resolve($actionName);
 
             $this->assertInstanceOf(
-                \Ahmedessam\LaravelGitToolkit\Contracts\GitActionInterface::class,
+                GitActionInterface::class,
                 $action,
                 "Action '$actionName' should implement GitActionInterface"
             );
@@ -124,12 +128,12 @@ class RefactoringSuccessTest extends TestCase
     public function test_console_abstraction_works()
     {
         // Test that console IO abstraction is properly implemented
-        $consoleIO = new \Ahmedessam\LaravelGitToolkit\Services\Console\ArtisanConsoleIO(
-            $this->createMock(\Illuminate\Console\Command::class)
+        $consoleIO = new ArtisanConsoleIO(
+            $this->createMock(Command::class)
         );
 
         $this->assertInstanceOf(
-            \Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface::class,
+            ConsoleIOInterface::class,
             $consoleIO
         );
     }
@@ -137,8 +141,8 @@ class RefactoringSuccessTest extends TestCase
     public function test_action_result_standardization()
     {
         // Test that ActionResult provides consistent response format
-        $successResult = \Ahmedessam\LaravelGitToolkit\Actions\ActionResult::success('Test success');
-        $failureResult = \Ahmedessam\LaravelGitToolkit\Actions\ActionResult::failure('Test failure');
+        $successResult = ActionResult::success('Test success');
+        $failureResult = ActionResult::failure('Test failure');
 
         $this->assertTrue($successResult->isSuccess());
         $this->assertFalse($successResult->isFailure());
@@ -158,7 +162,7 @@ class RefactoringSuccessTest extends TestCase
             'git branch --branch=feature/test',
             'git checkout --branch=main',
             'git fetch',
-            'git merge --merge=feature/test'
+            'git merge --merge=feature/test',
         ];
 
         foreach ($commands as $command) {

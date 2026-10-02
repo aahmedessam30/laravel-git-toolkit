@@ -8,16 +8,16 @@ use Closure;
 class ValidateAction
 {
     protected array $supportedActions = [
-        'pull', 'push', 'merge', 'checkout', 'branch', 
-        'push-branch', 'delete-branch', 'log', 'diff', 
-        'fetch', 'reset', 'rebase'
+        'pull', 'push', 'merge', 'checkout', 'branch',
+        'push-branch', 'delete-branch', 'log', 'diff',
+        'fetch', 'reset', 'rebase',
     ];
 
     public function handle(array $payload, Closure $next)
     {
         $action = $payload['action'] ?? null;
 
-        if (!$action || !in_array($action, $this->supportedActions)) {
+        if (! $action || ! in_array($action, $this->supportedActions)) {
             throw new UnsupportedAction($action, $this->supportedActions);
         }
 

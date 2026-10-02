@@ -2,15 +2,16 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Services\GitFlow;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Process;
 
 class GitFlowOperations
 {
     protected array $existedBranches = [];
+
     protected Command $command;
+
     protected mixed $components;
 
     public function __construct(
@@ -22,18 +23,19 @@ class GitFlowOperations
     {
         $this->command = $command;
         $this->components = $components;
+
         return $this;
     }
 
     /**
      * @throws \Exception
      */
-    protected function checkMainBranch(): string|null
+    protected function checkMainBranch(): ?string
     {
         $mainBranch = match (true) {
             $this->branchExists('master') => 'master',
-            $this->branchExists('main')   => 'main',
-            default                       => null,
+            $this->branchExists('main') => 'main',
+            default => null,
         };
 
         if ($mainBranch === 'master') {
@@ -49,10 +51,11 @@ class GitFlowOperations
             $this->components->info('Main branch found.');
         }
 
-        if (!$mainBranch) {
+        if (! $mainBranch) {
             $mainBranch = $this->command->ask('No main branch found. Please enter the main branch name', 'main');
             $this->existedBranches[] = $mainBranch;
             $this->components->info("Main branch is $mainBranch.");
+
             return $mainBranch;
         }
 
@@ -70,6 +73,7 @@ class GitFlowOperations
         if ($this->branchExists($branch)) {
             $this->components->warn("Branch $branch already exists 🤷‍♂️...");
             $this->existedBranches[] = $branch;
+
             return;
         }
 
@@ -89,7 +93,7 @@ class GitFlowOperations
 
         foreach ($this->getFlowConfig('optional_branches') as $type) {
             if ($this->components->confirm("Do you want to create a $type branch?")) {
-                $name = $this->command->ask(sprintf("Enter [%s] branch name", ucfirst($type)));
+                $name = $this->command->ask(sprintf('Enter [%s] branch name', ucfirst($type)));
                 $type = array_key_exists($type, $this->getFlowConfig('branch_prefixes')) ? $this->getFlowConfig('branch_prefixes')[$type] : $type;
                 $this->createBranch("$type/$name");
                 $branches[] = "$type/$name";
@@ -108,13 +112,14 @@ class GitFlowOperations
 
         // Check which branches are not published to remote
         foreach ($branches as $branch) {
-            if (!$this->remoteBranchExists($branch)) {
+            if (! $this->remoteBranchExists($branch)) {
                 $unpublishedBranches[] = $branch;
             }
         }
 
         if (empty($unpublishedBranches)) {
             $this->components->info('All branches are already published to remote.');
+
             return;
         }
 
@@ -133,7 +138,8 @@ class GitFlowOperations
                     "Failed to push branch $branch 🤷‍♂️..."
                 );
             } catch (\Exception $e) {
-                $this->components->error("Failed to push branch $branch: " . $e->getMessage());
+                $this->components->error("Failed to push branch $branch: ".$e->getMessage());
+
                 // Continue with next branch instead of stopping
                 continue;
             }
@@ -163,6 +169,7 @@ class GitFlowOperations
     {
         try {
             $this->repository->executeGitCommand(['ls-remote', '--exit-code', 'origin', $branch]);
+
             return true;
         } catch (\Exception $e) {
             return false;

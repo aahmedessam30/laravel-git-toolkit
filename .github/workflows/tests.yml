@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -44,6 +44,7 @@ jobs:
           git config --global user.name "CI"
           git config --global user.email "ci@example.com"
           git config --global init.defaultBranch main
+          git --version
 
       - name: Install dependencies
         shell: bash
@@ -54,3 +55,27 @@ jobs:
       - name: Run tests
         shell: bash
         run: vendor/bin/phpunit --no-coverage
+
+  lint:
+    name: Pint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - run: composer update --prefer-dist --no-interaction --no-progress
+      - run: vendor/bin/pint --test
+
+  static-analysis:
+    name: Larastan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - run: composer update --prefer-dist --no-interaction --no-progress
+      - run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress

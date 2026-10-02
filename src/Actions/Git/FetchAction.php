@@ -2,8 +2,8 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 
 class FetchAction extends BaseGitAction
 {
@@ -12,14 +12,15 @@ class FetchAction extends BaseGitAction
         try {
             $result = $this->repository->executeGitCommand(['fetch']);
 
-            $io->info("Fetch completed successfully");
+            $io->info('Fetch completed successfully');
 
-            return $this->success("Successfully fetched from remote", [
-                'output' => $result
+            return $this->success('Successfully fetched from remote', [
+                'output' => $result,
             ]);
         } catch (\Exception $e) {
-            $io->error("Fetch failed: " . $e->getMessage());
-            return $this->failure("Fetch failed: " . $e->getMessage());
+            $io->error('Fetch failed: '.$e->getMessage());
+
+            return $this->failure('Fetch failed: '.$e->getMessage());
         }
     }
 

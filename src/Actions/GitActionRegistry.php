@@ -22,7 +22,7 @@ class GitActionRegistry
      */
     public function resolve(string $name): GitActionInterface
     {
-        if (!isset($this->actions[$name])) {
+        if (! isset($this->actions[$name])) {
             throw new UnsupportedAction("Action [{$name}] is not registered");
         }
 

@@ -2,23 +2,24 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Ahmedessam\LaravelGitToolkit\Console\Commands\{GitCommand, GitFlowCommand};
-use Ahmedessam\LaravelGitToolkit\Services\{GitToolkit, GitFlow\GitFlowToolkit, GitToolkitConfig};
-use Ahmedessam\LaravelGitToolkit\Services\Git\GitRepository;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\BranchAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\CheckoutAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\FetchAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\MergeAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PullAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\RebaseAction;
+use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
+use Ahmedessam\LaravelGitToolkit\Console\Commands\GitCommand;
+use Ahmedessam\LaravelGitToolkit\Console\Commands\GitFlowCommand;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
 use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
-use Ahmedessam\LaravelGitToolkit\Contracts\{GitRepositoryInterface, ConfigInterface};
-use Ahmedessam\LaravelGitToolkit\Actions\{GitActionRegistry};
-use Ahmedessam\LaravelGitToolkit\Actions\Git\{
-    PushAction,
-    PullAction,
-    BranchAction,
-    MergeAction,
-    CheckoutAction,
-    FetchAction,
-    RebaseAction
-};
+use Ahmedessam\LaravelGitToolkit\Services\Git\GitRepository;
+use Ahmedessam\LaravelGitToolkit\Services\GitFlow\GitFlowToolkit;
+use Ahmedessam\LaravelGitToolkit\Services\GitToolkitConfig;
+use Illuminate\Support\ServiceProvider;
 
 class LaravelGitToolkitServiceProvider extends ServiceProvider
 {
@@ -43,7 +44,7 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
 
         // Action Registry
         $this->app->singleton(GitActionRegistry::class, function ($app) {
-            $registry = new GitActionRegistry();
+            $registry = new GitActionRegistry;
 
             // Register all git actions
             $registry->register('push', PushAction::class);
@@ -64,7 +65,7 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
             );
         });
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/git-toolkit.php', 'git-toolkit');
+        $this->mergeConfigFrom(__DIR__.'/../../config/git-toolkit.php', 'git-toolkit');
     }
 
     public function boot(): void
@@ -75,7 +76,7 @@ class LaravelGitToolkitServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            __DIR__ . '/../config/git-toolkit.php' => $this->app->configPath('git-toolkit.php'),
+            __DIR__.'/../../config/git-toolkit.php' => $this->app->configPath('git-toolkit.php'),
         ], 'git-toolkit-config');
     }
 }

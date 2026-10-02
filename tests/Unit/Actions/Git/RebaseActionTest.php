@@ -2,19 +2,22 @@
 
 namespace Tests\Unit\Actions\Git;
 
-use Tests\TestCase;
-use Mockery;
+use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\RebaseAction;
-use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
-use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Mockery;
+use Tests\TestCase;
 
 class RebaseActionTest extends TestCase
 {
     private RebaseAction $rebaseAction;
+
     private $mockRepository;
+
     private $mockConfig;
+
     private $mockConsoleIO;
 
     protected function setUp(): void
@@ -109,7 +112,7 @@ class RebaseActionTest extends TestCase
         $result = $this->rebaseAction->execute($options, $this->mockConsoleIO);
 
         $this->assertInstanceOf(ActionResult::class, $result);
-        $this->assertTrue($result->isSuccess(), 'Expected rebase abort to succeed, but got: ' . $result->getMessage());
+        $this->assertTrue($result->isSuccess(), 'Expected rebase abort to succeed, but got: '.$result->getMessage());
         $this->assertEquals('Rebase operation aborted', $result->getMessage());
     }
 

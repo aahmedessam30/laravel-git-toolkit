@@ -9,7 +9,7 @@ class ValidateGitRepository
 {
     public function handle(array $payload, Closure $next)
     {
-        if (!is_dir(getcwd() . '/.git')) {
+        if (! is_dir(getcwd().'/.git')) {
             throw new GitRepositoryNotFound(getcwd());
         }
 

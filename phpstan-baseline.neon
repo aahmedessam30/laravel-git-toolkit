@@ -1,0 +1,37 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/Actions/Git/BranchAction.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: src/Actions/Git/PushAction.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: true$#'
+			identifier: match.unhandled
+			count: 1
+			path: src/Actions/Git/PushAction.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: src/Actions/Git/PushAction.php
+
+		-
+			message: '#^Static call to instance method Ahmedessam\\LaravelGitToolkit\\Facade\\GitFlowToolkit\:\:setCommand\(\)\.$#'
+			identifier: method.staticCall
+			count: 1
+			path: src/Console/Commands/GitFlowCommand.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/Services/Console/ArtisanConsoleIO.php

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Actions;
 
-use Tests\TestCase;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Tests\TestCase;
 
 class ActionResultTest extends TestCase
 {

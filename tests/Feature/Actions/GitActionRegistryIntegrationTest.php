@@ -2,15 +2,16 @@
 
 namespace Tests\Feature\Actions;
 
-use Tests\TestCase;
-use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\PullAction;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\BranchAction;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\MergeAction;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\CheckoutAction;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\FetchAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\MergeAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PullAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
 use Ahmedessam\LaravelGitToolkit\Actions\Git\RebaseAction;
+use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitActionInterface;
+use Tests\TestCase;
 
 class GitActionRegistryIntegrationTest extends TestCase
 {
@@ -27,7 +28,7 @@ class GitActionRegistryIntegrationTest extends TestCase
             'merge',
             'checkout',
             'fetch',
-            'rebase'
+            'rebase',
         ];
 
         $this->assertEquals($expectedActions, $supportedActions);
@@ -79,7 +80,7 @@ class GitActionRegistryIntegrationTest extends TestCase
 
             // All actions should be instances of GitActionInterface
             $this->assertInstanceOf(
-                \Ahmedessam\LaravelGitToolkit\Contracts\GitActionInterface::class,
+                GitActionInterface::class,
                 $action
             );
         }

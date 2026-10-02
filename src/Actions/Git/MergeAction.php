@@ -2,20 +2,23 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 
 class MergeAction extends BaseGitAction
 {
     private const MERGE_SUCCESS_EMOJI = '✅';
+
     private const MERGE_FAILURE_EMOJI = '❌';
+
     private const PUSH_SUCCESS_EMOJI = '📤';
+
     private const PUSH_WARNING_EMOJI = '⚠️';
 
     public function execute(array $options, ConsoleIOInterface $io): ActionResult
     {
         try {
-            $sourceBranch   = $this->getSourceBranch($options, $io);
+            $sourceBranch = $this->getSourceBranch($options, $io);
             $targetBranches = $this->parseTargetBranches($options);
             $originalBranch = $this->repository->getCurrentBranch();
 
@@ -44,7 +47,7 @@ class MergeAction extends BaseGitAction
         }
 
         $currentBranch = $this->repository->getCurrentBranch();
-        $sourceBranch = $io->ask('Source branch to merge: [blank for current branch `' . $currentBranch . '`]');
+        $sourceBranch = $io->ask('Source branch to merge: [blank for current branch `'.$currentBranch.'`]');
 
         // If user provided empty input, use current branch
         return empty($sourceBranch) ? $currentBranch : $sourceBranch;
@@ -70,7 +73,7 @@ class MergeAction extends BaseGitAction
 
         return [
             'merged' => $mergedBranches,
-            'failed' => $failedBranches
+            'failed' => $failedBranches,
         ];
     }
 
@@ -101,7 +104,7 @@ class MergeAction extends BaseGitAction
      */
     private function reportMergeSuccess(string $sourceBranch, string $targetBranch, ConsoleIOInterface $io): void
     {
-        $io->info(self::MERGE_SUCCESS_EMOJI . " Successfully merged {$sourceBranch} into {$targetBranch}");
+        $io->info(self::MERGE_SUCCESS_EMOJI." Successfully merged {$sourceBranch} into {$targetBranch}");
     }
 
     /**
@@ -109,7 +112,7 @@ class MergeAction extends BaseGitAction
      */
     private function handleSingleMergeFailure(string $sourceBranch, string $targetBranch, \Exception $e, ConsoleIOInterface $io): void
     {
-        $io->error(self::MERGE_FAILURE_EMOJI . " Failed to merge {$sourceBranch} into {$targetBranch}: " . $e->getMessage());
+        $io->error(self::MERGE_FAILURE_EMOJI." Failed to merge {$sourceBranch} into {$targetBranch}: ".$e->getMessage());
     }
 
     /**
@@ -130,8 +133,9 @@ class MergeAction extends BaseGitAction
      */
     private function handleMergeFailure(\Exception $e, ConsoleIOInterface $io): ActionResult
     {
-        $io->error("Merge operation failed: " . $e->getMessage());
-        return $this->failure("Merge operation failed: " . $e->getMessage());
+        $io->error('Merge operation failed: '.$e->getMessage());
+
+        return $this->failure('Merge operation failed: '.$e->getMessage());
     }
 
     /**
@@ -158,7 +162,7 @@ class MergeAction extends BaseGitAction
         $branchOption = trim($branchOption);
 
         // Check for common shell argument parsing mistakes
-        if (str_contains($branchOption, ' ') && !str_contains($branchOption, ',')) {
+        if (str_contains($branchOption, ' ') && ! str_contains($branchOption, ',')) {
             throw new \InvalidArgumentException(
                 "Branch names with spaces detected. Use quotes around the entire --branch argument: --branch=\"{$branchOption}\""
             );
@@ -181,9 +185,9 @@ class MergeAction extends BaseGitAction
     {
         try {
             $this->repository->executeGitCommand(['push', 'origin', $branch]);
-            $io->info(self::PUSH_SUCCESS_EMOJI . " Pushed {$branch} to remote repository");
+            $io->info(self::PUSH_SUCCESS_EMOJI." Pushed {$branch} to remote repository");
         } catch (\Exception $e) {
-            $io->warn(self::PUSH_WARNING_EMOJI . " Failed to push {$branch}: " . $e->getMessage());
+            $io->warn(self::PUSH_WARNING_EMOJI." Failed to push {$branch}: ".$e->getMessage());
         }
     }
 
@@ -214,10 +218,10 @@ class MergeAction extends BaseGitAction
         $message = $this->formatSuccessMessage($sourceBranch, $mergedBranches);
 
         return $this->success($message, [
-            'source'          => $sourceBranch,
+            'source' => $sourceBranch,
             'merged_branches' => $mergedBranches,
-            'total_count'     => count($mergedBranches),
-            'success_count'   => count($mergedBranches)
+            'total_count' => count($mergedBranches),
+            'success_count' => count($mergedBranches),
         ]);
     }
 
@@ -229,10 +233,10 @@ class MergeAction extends BaseGitAction
         $message = "Failed to merge {$sourceBranch} into any target branches";
 
         return $this->failure($message, [
-            'source'          => $sourceBranch,
+            'source' => $sourceBranch,
             'failed_branches' => $failedBranches,
-            'total_count'     => count($failedBranches),
-            'failure_count'   => count($failedBranches)
+            'total_count' => count($failedBranches),
+            'failure_count' => count($failedBranches),
         ]);
     }
 
@@ -246,12 +250,12 @@ class MergeAction extends BaseGitAction
         $message = "Partially merged {$sourceBranch}: {$successCount} succeeded, {$failureCount} failed";
 
         return $this->success($message, [
-            'source'          => $sourceBranch,
+            'source' => $sourceBranch,
             'merged_branches' => $mergedBranches,
             'failed_branches' => $failedBranches,
-            'total_count'     => $successCount + $failureCount,
-            'success_count'   => $successCount,
-            'failure_count'   => $failureCount
+            'total_count' => $successCount + $failureCount,
+            'success_count' => $successCount,
+            'failure_count' => $failureCount,
         ]);
     }
 
@@ -267,6 +271,7 @@ class MergeAction extends BaseGitAction
         }
 
         $branchList = implode(', ', $branches);
+
         return "Successfully merged {$sourceBranch} into {$branchCount} branches: {$branchList} and pushed to remote";
     }
 

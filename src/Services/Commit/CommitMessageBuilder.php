@@ -32,7 +32,7 @@ class CommitMessageBuilder
 
     public function buildInteractiveCommitMessage(?string $currentBranch = null, ?ConsoleIOInterface $io = null): string
     {
-        if (!$io) {
+        if (! $io) {
             return $this->buildDefaultMessage(null, $currentBranch);
         }
 
@@ -53,7 +53,7 @@ class CommitMessageBuilder
     protected function buildInteractiveMessage(?string $type, ?string $message, ?string $currentBranch, ConsoleIOInterface $io): string
     {
         // Get message from user if not provided
-        if (!$message) {
+        if (! $message) {
             $defaultTemplate = $this->config->get('default_commit_message', 'Update [%s] branch with latest changes.');
             $defaultMessage = sprintf($defaultTemplate, $currentBranch ?? 'current');
 
@@ -63,7 +63,7 @@ class CommitMessageBuilder
         }
 
         // Get commit type from user if not provided
-        if (!$type) {
+        if (! $type) {
             $commitTypes = $this->config->getCommitTypes();
             $type = $io->choice('Enter the commit type', $commitTypes, 'feat');
         }
@@ -74,6 +74,7 @@ class CommitMessageBuilder
     protected function formatCommitMessage(string $type, string $message): string
     {
         $emoji = $this->config->getCommitEmoji($type);
+
         return sprintf('%s %s: %s', $emoji, $type, $message);
     }
 

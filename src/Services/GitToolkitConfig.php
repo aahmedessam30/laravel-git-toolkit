@@ -39,6 +39,7 @@ class GitToolkitConfig implements ConfigInterface
     public function getCommitEmoji(string $type): string
     {
         $emojis = $this->get('commit_emojis', []);
+
         return $emojis[$type] ?? '🔧';
     }
 
@@ -79,7 +80,7 @@ class GitToolkitConfig implements ConfigInterface
             'bugfix' => 'Bug fixes',
             'hotfix' => 'Critical hotfixes',
             'release' => 'Release preparation',
-            'chore' => 'Maintenance tasks'
+            'chore' => 'Maintenance tasks',
         ]);
     }
 }

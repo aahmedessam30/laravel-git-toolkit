@@ -2,14 +2,12 @@
 
 namespace Tests\Feature\Console\Commands;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Artisan;
-use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\PullAction;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\BranchAction;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\BranchAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
+use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
 use Mockery;
+use Tests\TestCase;
 
 class GitCommandTest extends TestCase
 {

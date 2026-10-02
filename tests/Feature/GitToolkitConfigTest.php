@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Ahmedessam\LaravelGitToolkit\Services\GitToolkitConfig;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
+use Tests\TestCase;
 
 class GitToolkitConfigTest extends TestCase
 {

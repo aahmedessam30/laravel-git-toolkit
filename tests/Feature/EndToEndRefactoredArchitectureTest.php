@@ -2,12 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
+use Ahmedessam\LaravelGitToolkit\Console\Commands\GitCommand;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
-use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitActionInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
+use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
+use Ahmedessam\LaravelGitToolkit\Services\Console\ArtisanConsoleIO;
+use Illuminate\Console\Command;
 use Mockery;
+use Tests\TestCase;
 
 class EndToEndRefactoredArchitectureTest extends TestCase
 {
@@ -33,7 +39,7 @@ class EndToEndRefactoredArchitectureTest extends TestCase
         $this->artisan('git push --message="Test commit"')
             ->assertExitCode(0);
 
-        // Test git pull  
+        // Test git pull
         $this->artisan('git pull --branch=main')
             ->assertExitCode(0);
 
@@ -58,8 +64,8 @@ class EndToEndRefactoredArchitectureTest extends TestCase
     {
         // Test that all required services are properly bound
         $this->assertInstanceOf(
-            \Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry::class,
-            app(\Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry::class)
+            GitActionRegistry::class,
+            app(GitActionRegistry::class)
         );
 
         $this->assertInstanceOf(
@@ -85,7 +91,7 @@ class EndToEndRefactoredArchitectureTest extends TestCase
 
     public function test_action_interface_contract_compliance()
     {
-        $registry = app(\Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry::class);
+        $registry = app(GitActionRegistry::class);
 
         $actions = ['push', 'pull', 'branch', 'merge', 'checkout', 'fetch'];
 
@@ -94,7 +100,7 @@ class EndToEndRefactoredArchitectureTest extends TestCase
 
             // Test that each action implements the interface
             $this->assertInstanceOf(
-                \Ahmedessam\LaravelGitToolkit\Contracts\GitActionInterface::class,
+                GitActionInterface::class,
                 $action
             );
 
@@ -109,11 +115,11 @@ class EndToEndRefactoredArchitectureTest extends TestCase
     public function test_console_io_abstraction_works()
     {
         // Test that ArtisanConsoleIO properly wraps Laravel Command
-        $command = $this->createMock(\Illuminate\Console\Command::class);
-        $consoleIO = new \Ahmedessam\LaravelGitToolkit\Services\Console\ArtisanConsoleIO($command);
+        $command = $this->createMock(Command::class);
+        $consoleIO = new ArtisanConsoleIO($command);
 
         $this->assertInstanceOf(
-            \Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface::class,
+            ConsoleIOInterface::class,
             $consoleIO
         );
     }
@@ -121,12 +127,12 @@ class EndToEndRefactoredArchitectureTest extends TestCase
     public function test_architecture_reduces_coupling()
     {
         // Verify that GitCommand only depends on GitActionRegistry
-        $gitCommand = new \Ahmedessam\LaravelGitToolkit\Console\Commands\GitCommand(
-            app(\Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry::class)
+        $gitCommand = new GitCommand(
+            app(GitActionRegistry::class)
         );
 
         $this->assertInstanceOf(
-            \Ahmedessam\LaravelGitToolkit\Console\Commands\GitCommand::class,
+            GitCommand::class,
             $gitCommand
         );
 
@@ -136,11 +142,11 @@ class EndToEndRefactoredArchitectureTest extends TestCase
 
         // Filter to only methods defined in the GitCommand class itself, not inherited
         $gitCommandMethods = array_filter($methods, function ($method) {
-            return $method->getDeclaringClass()->getName() === \Ahmedessam\LaravelGitToolkit\Console\Commands\GitCommand::class;
+            return $method->getDeclaringClass()->getName() === GitCommand::class;
         });
 
         // Should have significantly fewer methods than the original monolithic version
-        $methodNames = array_map(fn($method) => $method->getName(), $gitCommandMethods);
+        $methodNames = array_map(fn ($method) => $method->getName(), $gitCommandMethods);
         $this->assertContains('handle', $methodNames);
         $this->assertLessThan(10, count($gitCommandMethods)); // Much fewer methods than original
     }

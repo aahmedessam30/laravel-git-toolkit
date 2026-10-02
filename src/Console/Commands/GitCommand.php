@@ -2,10 +2,10 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Console\Commands;
 
-use Illuminate\Console\Command;
 use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
-use Ahmedessam\LaravelGitToolkit\Services\Console\ArtisanConsoleIO;
 use Ahmedessam\LaravelGitToolkit\Exceptions\UnsupportedAction;
+use Ahmedessam\LaravelGitToolkit\Services\Console\ArtisanConsoleIO;
+use Illuminate\Console\Command;
 
 class GitCommand extends Command
 {
@@ -30,32 +30,37 @@ class GitCommand extends Command
     public function handle(): int
     {
         try {
-            $action    = $this->argument('action');
+            $action = $this->argument('action');
             $consoleIO = new ArtisanConsoleIO($this, $this->components);
 
             // Show available actions if none provided
-            if (!$action) {
+            if (! $action) {
                 $this->displayAvailableActions();
+
                 return self::SUCCESS;
             }
 
             // Execute the action through the registry
             $gitAction = $this->actionRegistry->resolve($action);
-            $result    = $gitAction->execute($this->options(), $consoleIO);
+            $result = $gitAction->execute($this->options(), $consoleIO);
 
             if ($result->isSuccess()) {
                 $this->components->info($result->getMessage());
+
                 return self::SUCCESS;
             } else {
                 $this->components->error($result->getMessage());
+
                 return self::FAILURE;
             }
         } catch (UnsupportedAction $e) {
             $this->components->error($e->getMessage());
             $this->displayAvailableActions();
+
             return self::FAILURE;
         } catch (\Exception $e) {
-            $this->components->error('An error occurred: ' . $e->getMessage());
+            $this->components->error('An error occurred: '.$e->getMessage());
+
             return self::FAILURE;
         }
     }
@@ -70,6 +75,7 @@ class GitCommand extends Command
             ['Action', 'Description'],
             collect($actions)->map(function ($actionClass, $actionName) {
                 $action = app($actionClass);
+
                 return [$actionName, $action->getDescription()];
             })->toArray()
         );
