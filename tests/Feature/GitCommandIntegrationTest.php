@@ -2,10 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Artisan;
 use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Mockery;
+use Tests\TestCase;
 
 class GitCommandIntegrationTest extends TestCase
 {

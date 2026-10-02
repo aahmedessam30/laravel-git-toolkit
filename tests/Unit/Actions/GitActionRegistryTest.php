@@ -2,12 +2,11 @@
 
 namespace Tests\Unit\Actions;
 
-use Tests\TestCase;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PullAction;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
 use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
 use Ahmedessam\LaravelGitToolkit\Exceptions\UnsupportedAction;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\PullAction;
-use Mockery;
+use Tests\TestCase;
 
 class GitActionRegistryTest extends TestCase
 {
@@ -16,7 +15,7 @@ class GitActionRegistryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->registry = new GitActionRegistry();
+        $this->registry = new GitActionRegistry;
     }
 
     public function test_register_and_resolve_action()

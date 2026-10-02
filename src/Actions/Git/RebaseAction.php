@@ -2,8 +2,8 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 
 class RebaseAction extends BaseGitAction
 {
@@ -11,10 +11,10 @@ class RebaseAction extends BaseGitAction
     {
         try {
             $interactive = $options['interactive'] ?? false;
-            $onto        = $options['onto'] ?? null;
-            $abort       = $options['abort'] ?? false;
-            $continue    = $options['continue'] ?? false;
-            $skip        = $options['skip'] ?? false;
+            $onto = $options['onto'] ?? null;
+            $abort = $options['abort'] ?? false;
+            $continue = $options['continue'] ?? false;
+            $skip = $options['skip'] ?? false;
 
             // Handle rebase control options
             if ($abort) {
@@ -34,15 +34,17 @@ class RebaseAction extends BaseGitAction
 
             // Validate repository state before rebase
             if ($this->repository->hasUncommittedChanges()) {
-                $io->error("Cannot rebase with uncommitted changes. Please commit or stash your changes first.");
-                return $this->failure("Rebase failed: Uncommitted changes detected");
+                $io->error('Cannot rebase with uncommitted changes. Please commit or stash your changes first.');
+
+                return $this->failure('Rebase failed: Uncommitted changes detected');
             }
 
             // Perform rebase operation
             return $this->performRebase($branch, $interactive, $onto, $io);
         } catch (\Exception $e) {
-            $io->error("Rebase failed: " . $e->getMessage());
-            return $this->failure("Rebase failed: " . $e->getMessage());
+            $io->error('Rebase failed: '.$e->getMessage());
+
+            return $this->failure('Rebase failed: '.$e->getMessage());
         }
     }
 
@@ -68,34 +70,34 @@ class RebaseAction extends BaseGitAction
             $command[] = $branch;
         }
 
-        $io->info("Starting rebase operation...");
+        $io->info('Starting rebase operation...');
 
         try {
             $result = $this->repository->executeGitCommand($command);
 
             if ($interactive) {
-                $io->info("Interactive rebase completed. Please check the result.");
+                $io->info('Interactive rebase completed. Please check the result.');
             } else {
-                $io->info("Rebase completed successfully.");
+                $io->info('Rebase completed successfully.');
             }
 
             return $this->success("Successfully rebased onto {$branch}", [
                 'branch' => $branch,
                 'interactive' => $interactive,
                 'onto' => $onto,
-                'output' => $result
+                'output' => $result,
             ]);
         } catch (\Exception $e) {
             // Check if it's a rebase conflict
             if (str_contains($e->getMessage(), 'conflict') || str_contains($e->getMessage(), 'CONFLICT')) {
-                $io->warn("Rebase conflicts detected. Please resolve conflicts and run:");
-                $io->info("  php artisan git rebase --continue  (after resolving conflicts)");
-                $io->info("  php artisan git rebase --abort     (to cancel rebase)");
-                $io->info("  php artisan git rebase --skip      (to skip current commit)");
+                $io->warn('Rebase conflicts detected. Please resolve conflicts and run:');
+                $io->info('  php artisan git rebase --continue  (after resolving conflicts)');
+                $io->info('  php artisan git rebase --abort     (to cancel rebase)');
+                $io->info('  php artisan git rebase --skip      (to skip current commit)');
 
-                return $this->failure("Rebase conflicts require manual resolution", [
+                return $this->failure('Rebase conflicts require manual resolution', [
                     'conflicts' => true,
-                    'branch' => $branch
+                    'branch' => $branch,
                 ]);
             }
 
@@ -108,19 +110,20 @@ class RebaseAction extends BaseGitAction
      */
     private function handleAbort(ConsoleIOInterface $io): ActionResult
     {
-        $io->info("Aborting rebase operation...");
+        $io->info('Aborting rebase operation...');
 
         try {
             $result = $this->repository->executeGitCommand(['rebase', '--abort']);
-            $io->info("Rebase aborted successfully.");
+            $io->info('Rebase aborted successfully.');
 
-            return $this->success("Rebase operation aborted", [
+            return $this->success('Rebase operation aborted', [
                 'action' => 'abort',
-                'output' => $result
+                'output' => $result,
             ]);
         } catch (\Exception $e) {
-            $io->error("Failed to abort rebase: " . $e->getMessage());
-            return $this->failure("Rebase abort failed: " . $e->getMessage());
+            $io->error('Failed to abort rebase: '.$e->getMessage());
+
+            return $this->failure('Rebase abort failed: '.$e->getMessage());
         }
     }
 
@@ -131,25 +134,27 @@ class RebaseAction extends BaseGitAction
     {
         // Check if there are still uncommitted changes (conflicts not resolved)
         if ($this->repository->hasUncommittedChanges()) {
-            $io->error("Please resolve all conflicts and stage your changes before continuing.");
+            $io->error('Please resolve all conflicts and stage your changes before continuing.');
             $io->info("Use 'git add <file>' to stage resolved files, then run rebase --continue again.");
-            return $this->failure("Rebase continue failed: Unresolved conflicts");
+
+            return $this->failure('Rebase continue failed: Unresolved conflicts');
         }
 
-        $io->info("Continuing rebase operation...");
+        $io->info('Continuing rebase operation...');
 
         try {
             $result = $this->repository->executeGitCommand(['rebase', '--continue']);
-            $io->info("Rebase continued successfully.");
+            $io->info('Rebase continued successfully.');
 
-            return $this->success("Rebase operation continued", [
+            return $this->success('Rebase operation continued', [
                 'action' => 'continue',
-                'output' => $result
+                'output' => $result,
             ]);
         } catch (\Exception $e) {
             if (str_contains($e->getMessage(), 'conflict') || str_contains($e->getMessage(), 'CONFLICT')) {
-                $io->warn("Additional conflicts detected during continue.");
-                return $this->failure("Rebase continue failed: Additional conflicts require resolution");
+                $io->warn('Additional conflicts detected during continue.');
+
+                return $this->failure('Rebase continue failed: Additional conflicts require resolution');
             }
 
             throw $e;
@@ -161,20 +166,21 @@ class RebaseAction extends BaseGitAction
      */
     private function handleSkip(ConsoleIOInterface $io): ActionResult
     {
-        $io->info("Skipping current commit in rebase...");
+        $io->info('Skipping current commit in rebase...');
 
         try {
             $result = $this->repository->executeGitCommand(['rebase', '--skip']);
-            $io->info("Current commit skipped successfully.");
+            $io->info('Current commit skipped successfully.');
 
-            return $this->success("Rebase skip completed", [
+            return $this->success('Rebase skip completed', [
                 'action' => 'skip',
-                'output' => $result
+                'output' => $result,
             ]);
         } catch (\Exception $e) {
             if (str_contains($e->getMessage(), 'conflict') || str_contains($e->getMessage(), 'CONFLICT')) {
-                $io->warn("Additional conflicts detected after skip.");
-                return $this->failure("Rebase skip failed: Additional conflicts require resolution");
+                $io->warn('Additional conflicts detected after skip.');
+
+                return $this->failure('Rebase skip failed: Additional conflicts require resolution');
             }
 
             throw $e;

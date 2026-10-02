@@ -3,15 +3,15 @@
 namespace Tests;
 
 use Ahmedessam\LaravelGitToolkit\Providers\LaravelGitToolkitServiceProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Mockery;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Set up application configuration for testing
         config()->set('git-toolkit', include __DIR__.'/../src/config/git-toolkit.php');
     }

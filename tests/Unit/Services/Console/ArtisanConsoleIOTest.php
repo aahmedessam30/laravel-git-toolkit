@@ -2,15 +2,17 @@
 
 namespace Tests\Unit\Services\Console;
 
-use Tests\TestCase;
 use Ahmedessam\LaravelGitToolkit\Services\Console\ArtisanConsoleIO;
 use Illuminate\Console\Command;
 use Mockery;
+use Tests\TestCase;
 
 class ArtisanConsoleIOTest extends TestCase
 {
     private $mockCommand;
+
     private $mockComponents;
+
     private ArtisanConsoleIO $consoleIO;
 
     protected function setUp(): void

@@ -10,7 +10,7 @@ class GitCommandFailed extends LaravelGitToolkitException
         if ($error) {
             $message .= " - Error: {$error}";
         }
-        
+
         parent::__construct($message);
     }
 }

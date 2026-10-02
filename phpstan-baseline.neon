@@ -31,19 +31,13 @@ parameters:
 			path: src/Console/Commands/GitFlowCommand.php
 
 		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$sourceBranch \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 1
-			path: src/Events/BranchCreated.php
-
-		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$path \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 1
-			path: src/Exceptions/GitRepositoryNotFound.php
-
-		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
 			count: 1
 			path: src/Services/Console/ArtisanConsoleIO.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 9
+			path: src/config/git-toolkit.php

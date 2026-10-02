@@ -72,17 +72,17 @@ return [
      * This will be used when pushing changes, you can add more types if you want.
      */
     'commit_types' => [
-        'feat'     => '🚀 Feature: A new feature',
-        'fix'      => '🐛 Fix: A bug fix',
-        'docs'     => '📝 Docs: Documentation only changes',
-        'style'    => '💄 Style: Changes that do not affect the meaning of the code',
+        'feat' => '🚀 Feature: A new feature',
+        'fix' => '🐛 Fix: A bug fix',
+        'docs' => '📝 Docs: Documentation only changes',
+        'style' => '💄 Style: Changes that do not affect the meaning of the code',
         'refactor' => '♻️ Refactor: A code change that neither fixes a bug nor adds a feature',
-        'pref'     => '⚡️ Perf: A code change that improves performance',
-        'test'     => '🚨 Test: Adding missing tests or correcting existing tests',
-        'build'    => '👷 Build: Changes that affect the build system or external dependencies',
-        'ci'       => '🔧 CI: Changes to the CI configuration files and scripts',
-        'chore'    => '🔧 Chore: Changes to the build process or auxiliary tools and libraries such as documentation generation',
-        'revert'   => '⏪ Revert: Revert to a commit',
+        'pref' => '⚡️ Perf: A code change that improves performance',
+        'test' => '🚨 Test: Adding missing tests or correcting existing tests',
+        'build' => '👷 Build: Changes that affect the build system or external dependencies',
+        'ci' => '🔧 CI: Changes to the CI configuration files and scripts',
+        'chore' => '🔧 Chore: Changes to the build process or auxiliary tools and libraries such as documentation generation',
+        'revert' => '⏪ Revert: Revert to a commit',
     ],
 
     /**
@@ -91,17 +91,17 @@ return [
      * This will be used when pushing changes, you can add more emojis if you want.
      */
     'commit_emojis' => [
-        'feat'     => '🚀',
-        'fix'      => '🐛',
-        'docs'     => '📝',
-        'style'    => '💄',
+        'feat' => '🚀',
+        'fix' => '🐛',
+        'docs' => '📝',
+        'style' => '💄',
         'refactor' => '♻️',
-        'perf'     => '⚡️',
-        'test'     => '🚨',
-        'build'    => '👷',
-        'ci'       => '🔧',
-        'chore'    => '🔧',
-        'revert'   => '⏪',
+        'perf' => '⚡️',
+        'test' => '🚨',
+        'build' => '👷',
+        'ci' => '🔧',
+        'chore' => '🔧',
+        'revert' => '⏪',
     ],
 
     // New Branch (ex: feature/api/feature-name)
@@ -113,7 +113,7 @@ return [
      */
     'branch_types' => [
         'feature' => 'Features',
-        'fix'     => 'Bug Fixes',
+        'fix' => 'Bug Fixes',
         'release' => 'Release',
         'support' => 'Support',
     ],
@@ -124,9 +124,9 @@ return [
      * This will be used when creating a new branch, you can add more uses if you want.
      */
     'branch_uses' => [
-        'api'       => 'API',
+        'api' => 'API',
         'dashboard' => 'Dashboard',
-        'other'     => 'Other',
+        'other' => 'Other',
     ],
 
     /**
@@ -136,8 +136,8 @@ return [
      */
     'branch_prefixes' => [
         'feature' => 'feature',
-        'fix'     => 'fix',
-        'hotfix'  => 'hotfix',
+        'fix' => 'fix',
+        'hotfix' => 'hotfix',
     ],
 
     'git_flow' => [
@@ -169,8 +169,8 @@ return [
          */
         'branch_prefixes' => [
             'feature' => 'feature',
-            'fix'     => 'fix',
-            'hotfix'  => 'hotfix',
+            'fix' => 'fix',
+            'hotfix' => 'hotfix',
             'release' => 'release',
             'support' => 'support',
         ],

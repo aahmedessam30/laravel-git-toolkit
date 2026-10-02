@@ -2,8 +2,8 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 
 class CheckoutAction extends BaseGitAction
 {
@@ -17,11 +17,12 @@ class CheckoutAction extends BaseGitAction
             $io->info("Switched to branch: {$branch}");
 
             return $this->success("Successfully switched to {$branch}", [
-                'branch' => $branch
+                'branch' => $branch,
             ]);
         } catch (\Exception $e) {
-            $io->error("Checkout failed: " . $e->getMessage());
-            return $this->failure("Checkout failed: " . $e->getMessage());
+            $io->error('Checkout failed: '.$e->getMessage());
+
+            return $this->failure('Checkout failed: '.$e->getMessage());
         }
     }
 

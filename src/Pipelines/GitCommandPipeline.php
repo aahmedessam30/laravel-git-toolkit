@@ -3,7 +3,6 @@
 namespace Ahmedessam\LaravelGitToolkit\Pipelines;
 
 use Illuminate\Pipeline\Pipeline;
-use Illuminate\Support\ServiceProvider;
 
 class GitCommandPipeline
 {
@@ -28,12 +27,14 @@ class GitCommandPipeline
     public function addPipe(string $pipe): self
     {
         $this->pipes[] = $pipe;
+
         return $this;
     }
 
     public function setPipes(array $pipes): self
     {
         $this->pipes = $pipes;
+
         return $this;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
 
 class PullAction extends BaseGitAction
 {
@@ -16,15 +16,16 @@ class PullAction extends BaseGitAction
 
             $result = $this->repository->executeGitCommand(['pull', 'origin', $branch]);
 
-            $io->info("Pull completed successfully");
+            $io->info('Pull completed successfully');
 
             return $this->success("Successfully pulled from {$branch}", [
                 'branch' => $branch,
-                'output' => $result
+                'output' => $result,
             ]);
         } catch (\Exception $e) {
-            $io->error("Pull failed: " . $e->getMessage());
-            return $this->failure("Pull failed: " . $e->getMessage());
+            $io->error('Pull failed: '.$e->getMessage());
+
+            return $this->failure('Pull failed: '.$e->getMessage());
         }
     }
 

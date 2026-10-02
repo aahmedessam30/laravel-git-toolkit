@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Ahmedessam\LaravelGitToolkit\Actions\GitActionRegistry;
+use Tests\TestCase;
 
 class DebugRegistryTest extends TestCase
 {

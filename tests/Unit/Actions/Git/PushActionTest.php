@@ -2,21 +2,25 @@
 
 namespace Tests\Unit\Actions\Git;
 
-use Tests\TestCase;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
-use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\PushAction;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
 use Mockery;
+use Tests\TestCase;
 
 class PushActionTest extends TestCase
 {
     private $mockRepository;
+
     private $mockConfig;
+
     private $mockCommitBuilder;
+
     private $mockConsoleIO;
+
     private PushAction $pushAction;
 
     protected function setUp(): void

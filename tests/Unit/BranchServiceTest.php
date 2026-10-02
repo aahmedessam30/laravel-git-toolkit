@@ -2,26 +2,28 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
-use Ahmedessam\LaravelGitToolkit\Exceptions\InvalidBranchName;
-use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Ahmedessam\LaravelGitToolkit\Exceptions\InvalidBranchName;
+use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
 use Mockery;
+use Tests\TestCase;
 
 class BranchServiceTest extends TestCase
 {
     protected BranchService $branchService;
+
     protected $mockRepository;
+
     protected $mockConfig;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->mockRepository = Mockery::mock(GitRepositoryInterface::class);
         $this->mockConfig = Mockery::mock(ConfigInterface::class);
-        
+
         $this->branchService = new BranchService($this->mockRepository, $this->mockConfig);
     }
 

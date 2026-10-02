@@ -2,16 +2,18 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
-use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
-use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
-use Ahmedessam\LaravelGitToolkit\Events\CommitPushed;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Ahmedessam\LaravelGitToolkit\Events\CommitPushed;
+use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
 
 class PushAction extends BaseGitAction
 {
     public function __construct(
-        protected \Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface $repository,
-        protected \Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface $config,
+        protected GitRepositoryInterface $repository,
+        protected ConfigInterface $config,
         private CommitMessageBuilder $commitBuilder
     ) {
         parent::__construct($repository, $config);
@@ -27,15 +29,16 @@ class PushAction extends BaseGitAction
 
             // Handle different repository states
             return match ($repositoryState) {
-                'up_to_date'       => $this->handleUpToDateRepository($io),
-                'unpushed_only'    => $this->handleUnpushedCommitsOnly($io, $branch),
+                'up_to_date' => $this->handleUpToDateRepository($io),
+                'unpushed_only' => $this->handleUnpushedCommitsOnly($io, $branch),
                 'uncommitted_only' => $this->handleUncommittedChangesOnly($options, $io, $branch),
-                'mixed_changes'    => $this->handleMixedChanges($options, $io, $branch),
-                default            => $this->failure("Unknown repository state: {$repositoryState}")
+                'mixed_changes' => $this->handleMixedChanges($options, $io, $branch),
+                default => $this->failure("Unknown repository state: {$repositoryState}")
             };
         } catch (\Exception $e) {
-            $io->error("Push failed: " . $e->getMessage());
-            return $this->failure("Push failed: " . $e->getMessage());
+            $io->error('Push failed: '.$e->getMessage());
+
+            return $this->failure('Push failed: '.$e->getMessage());
         }
     }
 
@@ -48,10 +51,10 @@ class PushAction extends BaseGitAction
         $hasUnpushed = $this->repository->hasUnpushedCommits();
 
         return match (true) {
-            !$hasUncommitted && !$hasUnpushed => 'up_to_date',
-            !$hasUncommitted && $hasUnpushed  => 'unpushed_only',
-            $hasUncommitted  && !$hasUnpushed => 'uncommitted_only',
-            $hasUncommitted  && $hasUnpushed  => 'mixed_changes',
+            ! $hasUncommitted && ! $hasUnpushed => 'up_to_date',
+            ! $hasUncommitted && $hasUnpushed => 'unpushed_only',
+            $hasUncommitted && ! $hasUnpushed => 'uncommitted_only',
+            $hasUncommitted && $hasUnpushed => 'mixed_changes',
         };
     }
 
@@ -60,8 +63,9 @@ class PushAction extends BaseGitAction
      */
     private function handleUpToDateRepository(ConsoleIOInterface $io): ActionResult
     {
-        $io->info("No changes to commit or push.");
-        return $this->success("Repository is up to date - nothing to push");
+        $io->info('No changes to commit or push.');
+
+        return $this->success('Repository is up to date - nothing to push');
     }
 
     /**
@@ -69,14 +73,14 @@ class PushAction extends BaseGitAction
      */
     private function handleUnpushedCommitsOnly(ConsoleIOInterface $io, string $branch): ActionResult
     {
-        $io->info("Found unpushed commits. Pushing existing commits to remote...");
+        $io->info('Found unpushed commits. Pushing existing commits to remote...');
 
         $result = $this->executeGitPush($branch);
         $io->info("Pushed existing commits to branch: {$branch}");
 
         return $this->success("Successfully pushed existing commits to {$branch}", [
             'branch' => $branch,
-            'output' => $result
+            'output' => $result,
         ]);
     }
 
@@ -94,9 +98,9 @@ class PushAction extends BaseGitAction
         $io->info("Pushed to branch: {$branch}");
 
         return $this->success("Successfully committed and pushed to {$branch}", [
-            'branch'  => $branch,
+            'branch' => $branch,
             'message' => $message,
-            'output'  => $result
+            'output' => $result,
         ]);
     }
 
@@ -114,9 +118,9 @@ class PushAction extends BaseGitAction
         $io->info("Pushed to branch: {$branch}");
 
         return $this->success("Successfully committed and pushed to {$branch}", [
-            'branch'  => $branch,
+            'branch' => $branch,
             'message' => $message,
-            'output'  => $result
+            'output' => $result,
         ]);
     }
 
@@ -127,7 +131,7 @@ class PushAction extends BaseGitAction
     {
         $this->repository->executeGitCommand(['add', '.']);
         $this->repository->executeGitCommand(['commit', '-m', $message]);
-        $io->info("Changes committed successfully.");
+        $io->info('Changes committed successfully.');
     }
 
     /**
@@ -151,7 +155,7 @@ class PushAction extends BaseGitAction
 
     private function buildCommitMessage(array $options, ConsoleIOInterface $io): string
     {
-        if (!$options['message'] && !$this->config->shouldUseDefaultMessage()) {
+        if (! $options['message'] && ! $this->config->shouldUseDefaultMessage()) {
             return $this->commitBuilder->buildInteractiveCommitMessage(
                 $this->repository->getCurrentBranch(),
                 $io

@@ -2,21 +2,25 @@
 
 namespace Tests\Unit\Actions\Git;
 
-use Tests\TestCase;
-use Ahmedessam\LaravelGitToolkit\Actions\Git\BranchAction;
 use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
-use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
+use Ahmedessam\LaravelGitToolkit\Actions\Git\BranchAction;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
+use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
 use Ahmedessam\LaravelGitToolkit\Services\Branch\BranchService;
 use Mockery;
+use Tests\TestCase;
 
 class BranchActionTest extends TestCase
 {
     private $mockRepository;
+
     private $mockConfig;
+
     private $mockBranchService;
+
     private $mockConsoleIO;
+
     private BranchAction $branchAction;
 
     protected function setUp(): void

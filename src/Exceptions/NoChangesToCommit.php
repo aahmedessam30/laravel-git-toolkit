@@ -6,6 +6,6 @@ class NoChangesToCommit extends LaravelGitToolkitException
 {
     public function __construct()
     {
-        parent::__construct("There are no changes to commit.");
+        parent::__construct('There are no changes to commit.');
     }
 }

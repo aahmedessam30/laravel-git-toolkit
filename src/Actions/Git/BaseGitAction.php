@@ -2,10 +2,10 @@
 
 namespace Ahmedessam\LaravelGitToolkit\Actions\Git;
 
+use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
+use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\GitActionInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\GitRepositoryInterface;
-use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
-use Ahmedessam\LaravelGitToolkit\Actions\ActionResult;
 
 abstract class BaseGitAction implements GitActionInterface
 {

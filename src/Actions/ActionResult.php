@@ -17,7 +17,7 @@ class ActionResult
 
     public function isFailure(): bool
     {
-        return !$this->success;
+        return ! $this->success;
     }
 
     public function getMessage(): string

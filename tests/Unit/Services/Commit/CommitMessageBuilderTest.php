@@ -2,16 +2,18 @@
 
 namespace Tests\Unit\Services\Commit;
 
-use Tests\TestCase;
-use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConfigInterface;
 use Ahmedessam\LaravelGitToolkit\Contracts\ConsoleIOInterface;
+use Ahmedessam\LaravelGitToolkit\Services\Commit\CommitMessageBuilder;
 use Mockery;
+use Tests\TestCase;
 
 class CommitMessageBuilderTest extends TestCase
 {
     private $mockConfig;
+
     private $mockConsoleIO;
+
     private CommitMessageBuilder $builder;
 
     protected function setUp(): void
